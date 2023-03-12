@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
                         tec: passCtr,
                         hint: 'Password',
                         obscure: true,
-                        keyboardType: TextInputType.visiblePassword,
+                        keyboardType: TextInputType.text,
                       ),
                       CustomSizedBox.large(),
                       CustomElevatedButton(
