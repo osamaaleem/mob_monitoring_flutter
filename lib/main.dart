@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mob_monitoring_flutter/views/admin_dash.dart';
 import 'views/login.dart';
 
 void main() {
@@ -24,9 +25,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blueGrey,
+        primarySwatch: Colors.teal,
       ),
-      home: const Login(),
+      home: const AdminDash(username: 'Osama Aleem'),
     );
   }
 }

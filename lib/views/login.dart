@@ -87,15 +87,6 @@ class _LoginState extends State<Login> {
                           }
                         },
                       ),
-                      CustomSizedBox.small(),
-                      CustomElevatedButton(
-                          btnText: 'Register',
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Register()));
-                          })
                     ],
                   ),
                 )
