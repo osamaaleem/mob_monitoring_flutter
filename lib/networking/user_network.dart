@@ -2,11 +2,12 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:mob_monitoring_flutter/models/ip_address.dart';
 import 'package:mob_monitoring_flutter/models/user.dart';
 
 class UserNetwork{
   static Future<http.Response> registerUser(User user) async {
-    String url = "https://localhost:44381/api/users/register";
+    String url = "https://${IPAddress.getIP()}/api/users/register";
     var uri = Uri.parse(url);
     if(kDebugMode){
       print(uri);
@@ -17,7 +18,7 @@ class UserNetwork{
     return res;
   }
   static Future<http.Response> login(String email,String password) async {
-    String url = "https://localhost:44381/api/users/login";
+    String url = "https://${IPAddress.getIP()}/api/users/login";
     var uri = Uri.parse(url);
     if(kDebugMode){
       print(uri);

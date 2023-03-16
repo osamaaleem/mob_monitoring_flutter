@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mob_monitoring_flutter/models/ip_address.dart';
 
 import '../models/drone.dart';
 
 class DroneNetwork {
-  final String apiUrl = "https://localhost:44381/api/drones";
+  final String apiUrl = "https://${IPAddress.getIP()}:44381/api/drones";
 
   DroneNetwork();
 

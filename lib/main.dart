@@ -1,11 +1,23 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mob_monitoring_flutter/views/admin_dash.dart';
+import 'package:mob_monitoring_flutter/views/welcome_screen.dart';
 import 'views/login.dart';
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -13,7 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Mob Monitoring',
       theme: ThemeData(
 
         // This is the theme of your application.
@@ -27,7 +39,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.teal,
       ),
-      home: const AdminDash(username: 'Osama Aleem'),
+      home: const Welcome(),
     );
   }
 }

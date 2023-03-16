@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:mob_monitoring_flutter/models/ip_address.dart';
 
 import '../models/mob.dart';
 
 class MobNetwork {
-  final String _baseUrl = "https://localhost:44381/api/mobs";
+  final String _baseUrl = "https://${IPAddress.getIP()}/api/mobs";
 
 
   Future<List<Mob>> getActiveMobs() async {
@@ -33,6 +35,9 @@ class MobNetwork {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
+      if (kDebugMode) {
+        //print(response.body);
+      }
       return jsonList.map((json) => Mob.fromJson(json)).toList();
     } else {
       throw Exception('Failed to fetch mobs');

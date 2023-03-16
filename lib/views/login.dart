@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:mob_monitoring_flutter/views/generic.dart';
-import 'package:mob_monitoring_flutter/views/register.dart';
+import 'package:mob_monitoring_flutter/views/admin_dash.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../components/custom_elevated_button.dart';
 import '../components/custom_sized_box.dart';
@@ -31,10 +30,10 @@ class _LoginState extends State<Login> {
       ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-          child: ModalProgressHUD(
-            inAsyncCall: showSpinner,
+        child: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
             child: Column(
               children: [
                 const SizedBox(
@@ -62,6 +61,9 @@ class _LoginState extends State<Login> {
                       CustomElevatedButton(
                         btnText: 'Login',
                         onPressed: () async {
+                          setState(() {
+                            showSpinner = true;
+                          });
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState?.save();
                             try{
@@ -73,7 +75,7 @@ class _LoginState extends State<Login> {
                                   print("User Role: $role");
                                 }
                                 //TODO: add role wise navigation after creating screens.
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>const Generic()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminDash(username: nameCtr.text )));
                               }
                             }
                             catch(e){
