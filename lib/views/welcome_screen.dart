@@ -34,6 +34,7 @@ class _WelcomeState extends State<Welcome> {
                 children: [
                   CustomFormField(tec: ipCtr, hint: "Enter IP Address", keyboardType: TextInputType.text,),
                   CustomSizedBox.large(),
+                  CustomSizedBox.small(),
                   CustomElevatedButton(
                     btnText: "Enter",
                     onPressed: (){
@@ -47,7 +48,7 @@ class _WelcomeState extends State<Welcome> {
                           _showSpinner = false;
                         });
                         //Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => AdminDash(username: 'Osama')));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
                       }
                     },
                   )

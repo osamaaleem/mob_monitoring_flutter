@@ -1,9 +1,8 @@
 import 'dart:io';
 
+import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:mob_monitoring_flutter/views/admin_dash.dart';
 import 'package:mob_monitoring_flutter/views/welcome_screen.dart';
-import 'views/login.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -39,7 +38,36 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.teal,
       ),
-      home: const Welcome(),
+      home: const SplashPage(),
     );
   }
 }
+
+class SplashPage extends StatefulWidget {
+  const SplashPage({Key? key}) : super(key: key);
+
+  @override
+  _SplashPageState createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  Widget build(BuildContext context) {
+    return EasySplashScreen(
+      logo: Image.asset('assets/drone.png'),
+      title: const Text(
+        "Mob Monitoring",
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: Colors.grey.shade400,
+      showLoader: true,
+      loadingText: const Text("Loading..."),
+      navigator:const Welcome(),
+      durationInSeconds: 5,
+    );
+  }
+}
+

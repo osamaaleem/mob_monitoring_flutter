@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mob_monitoring_flutter/models/mob.dart';
+import 'package:mob_monitoring_flutter/views/add_mob.dart';
+import 'package:mob_monitoring_flutter/views/register.dart';
 
 import '../networking/mob_network.dart';
 
@@ -27,7 +29,9 @@ class _AdminDashState extends State<AdminDash> {
                 children: [
                   ListTile(
                     title: const Text("Add User"),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Register()));
+                    },
                   )
                 ],
               ),
@@ -38,7 +42,9 @@ class _AdminDashState extends State<AdminDash> {
                 children: [
                   ListTile(
                     title: const Text("Add Mob"),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const AddMob()));
+                    },
                   )
                 ],
               ),

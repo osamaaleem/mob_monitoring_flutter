@@ -22,6 +22,9 @@ class _LoginState extends State<Login> {
   TextEditingController nameCtr = TextEditingController();
   TextEditingController passCtr = TextEditingController();
   bool showSpinner = false;
+  static const snackBar = SnackBar(
+    content: Text("Authentication Failed! Please Try Again"),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +42,7 @@ class _LoginState extends State<Login> {
                 const SizedBox(
                     height: 200.0,
                     width: 200.0,
-                    child: Image(image: AssetImage('assets/drone.png'))),
+                    child: Image(image: AssetImage('assets/user.png'))),
                 CustomSizedBox.large(),
                 Form(
                   key: _formKey,
@@ -76,6 +79,9 @@ class _LoginState extends State<Login> {
                                 }
                                 //TODO: add role wise navigation after creating screens.
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminDash(username: nameCtr.text )));
+                              }
+                              else{
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               }
                             }
                             catch(e){

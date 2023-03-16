@@ -6,7 +6,6 @@ import 'package:mob_monitoring_flutter/components/custom_form_field.dart';
 import 'package:mob_monitoring_flutter/components/custom_sized_box.dart';
 import 'package:mob_monitoring_flutter/models/user.dart';
 import 'package:mob_monitoring_flutter/networking/user_network.dart';
-import 'package:mob_monitoring_flutter/views/login.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../components/custom_drop_down.dart';
@@ -32,7 +31,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Sign Up"),),
+      appBar: AppBar(title: const Text("Register User"),),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Padding(
@@ -82,7 +81,7 @@ class _RegisterState extends State<Register> {
                             try{
                               Response res = await UserNetwork.registerUser(user);
                               if(res.statusCode == 200 && mounted){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>const Login()));
+                                Navigator.pop(context);
                               }
                             }
                             catch(e){
