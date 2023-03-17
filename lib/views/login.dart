@@ -81,6 +81,9 @@ class _LoginState extends State<Login> {
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminDash(username: nameCtr.text )));
                               }
                               else{
+                                setState(() {
+                                  showSpinner = false;
+                                });
                                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               }
                             }
@@ -88,9 +91,7 @@ class _LoginState extends State<Login> {
                               if (kDebugMode) {
                                 print(e);
                               }
-                              setState(() {
-                                showSpinner = false;
-                              });
+
                             }
                           }
                         },
