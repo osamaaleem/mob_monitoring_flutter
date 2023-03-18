@@ -20,6 +20,14 @@ class DroneNetwork {
     return drones;
   }
 
+  Future<bool> addDrone(Drone drone) async {
+    final url = '$apiUrl/addDrone';
+    final response = await http.post(Uri.parse(url),body: drone.toJson());
+    if(response.statusCode == 200){
+      return true;
+    }
+    return false;
+  }
   Future<List<Drone>> getAvailableDrones() async {
     final drones = await fetchDrones();
     return drones.where((drone) => drone.isAvailable).toList();

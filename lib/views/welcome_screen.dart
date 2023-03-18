@@ -24,30 +24,40 @@ class _WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Enter IP"),),
+      appBar: AppBar(
+        title: const Text("Enter IP"),
+        elevation: 3,
+      ),
       body: SafeArea(
         child: ModalProgressHUD(
           inAsyncCall: _showSpinner,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
             child: Form(
               key: _frmState,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CustomFormField(tec: ipCtr, hint: "Enter IP Address", keyboardType: TextInputType.text,),
+                  CustomFormField(
+                    tec: ipCtr,
+                    hint: "Enter IP Address",
+                    keyboardType: TextInputType.text,
+                  ),
                   CustomSizedBox.large(),
                   CustomSizedBox.small(),
                   CustomElevatedButton(
                     btnText: "Enter",
-                    onPressed: (){
+                    onPressed: () {
                       setState(() {
                         _showSpinner = true;
                       });
-                      if(_frmState.currentState!.validate()){
+                      if (_frmState.currentState!.validate()) {
                         _frmState.currentState!.save();
                         IPAddress.setIP(ipCtr.text);
-                        Socket.connect(IPAddress.getIP(), 443, timeout: const Duration(seconds: 5)).then((socket){
+                        Socket.connect(IPAddress.getIP(), 443,
+                                timeout: const Duration(seconds: 5))
+                            .then((socket) {
                           if (kDebugMode) {
                             print("Success");
                           }
@@ -63,17 +73,17 @@ class _WelcomeState extends State<Welcome> {
                             ),
                           );
                           socket.destroy();
-                        }).catchError((error){
+                        }).catchError((error) {
                           if (kDebugMode) {
                             print("Exception on Socket $error");
                             setState(() {
                               _showSpinner = false;
                             });
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                           }
                         });
                         //Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
-
                       }
                     },
                   )

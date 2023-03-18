@@ -16,18 +16,22 @@ class _LocationPickerState extends State<LocationPicker> {
   LatLng _initialPosition = const LatLng(40.7128, -74.0060);
   //LatLng _selectedPosition =;
 
-
   void _onMapCreated(GoogleMapController controller) {
   }
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double btnPadding = screenWidth-85;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.pop(context);
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(right: btnPadding,bottom: 15),
+        child: FloatingActionButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
       appBar: AppBar(
         title: const Text('Select Location'),

@@ -29,6 +29,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 3,
         title: const Text("Welcome!"),
       ),
       resizeToAvoidBottomInset: true,
@@ -41,10 +42,13 @@ class _LoginState extends State<Login> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  CustomSizedBox.large(),
+                  CustomSizedBox.medium(),
                   const SizedBox(
-                      height: 200.0,
-                      width: 200.0,
+                      height: 100.0,
+                      width: 100.0,
                       child: Image(image: AssetImage('assets/user.png'))),
+                  CustomSizedBox.large(),
                   CustomSizedBox.large(),
                   Form(
                     key: _formKey,
@@ -80,12 +84,15 @@ class _LoginState extends State<Login> {
                                   if (kDebugMode) {
                                     print("User Role: $role");
                                   }
+                                  String name = nameCtr.text;
+                                  nameCtr.clear();
+                                  passCtr.clear();
                                   //TODO: add role wise navigation after creating screens.
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => AdminDash(
-                                            email: nameCtr.text,
+                                            email: name,
                                               username: role)));
                                 } else {
                                   setState(() {

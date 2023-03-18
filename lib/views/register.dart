@@ -44,10 +44,13 @@ class _RegisterState extends State<Register> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    CustomSizedBox.large(),
+                    CustomSizedBox.small(),
                     const SizedBox(
-                        height: 150.0,
-                        width: 150.0,
+                        height: 100.0,
+                        width: 100.0,
                         child: Image(image: AssetImage('assets/user.png'))),
+                    CustomSizedBox.large(),
                     CustomSizedBox.large(),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
