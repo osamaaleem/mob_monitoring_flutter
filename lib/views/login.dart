@@ -36,69 +36,80 @@ class _LoginState extends State<Login> {
         child: ModalProgressHUD(
           inAsyncCall: showSpinner,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-            child: Column(
-              children: [
-                const SizedBox(
-                    height: 200.0,
-                    width: 200.0,
-                    child: Image(image: AssetImage('assets/user.png'))),
-                CustomSizedBox.large(),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CustomFormField(
-                        tec: nameCtr,
-                        hint: 'Username',
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      CustomSizedBox.medium(),
-                      CustomFormField(
-                        tec: passCtr,
-                        hint: 'Password',
-                        obscure: true,
-                        keyboardType: TextInputType.text,
-                      ),
-                      CustomSizedBox.large(),
-                      CustomElevatedButton(
-                        btnText: 'Login',
-                        onPressed: () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState?.save();
-                            try{
-                              Response res = await UserNetwork.login(nameCtr.text, passCtr.text);
-                              if(res.statusCode == 200 && mounted){
-                                var resBody = jsonDecode(res.body);
-                                String role = resBody["message"].toString();
-                                if (kDebugMode) {
-                                  print("User Role: $role");
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                      height: 200.0,
+                      width: 200.0,
+                      child: Image(image: AssetImage('assets/user.png'))),
+                  CustomSizedBox.large(),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        CustomFormField(
+                          tec: nameCtr,
+                          hint: 'Username',
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        CustomSizedBox.medium(),
+                        CustomFormField(
+                          tec: passCtr,
+                          hint: 'Password',
+                          obscure: true,
+                          keyboardType: TextInputType.text,
+                        ),
+                        CustomSizedBox.large(),
+                        CustomElevatedButton(
+                          btnText: 'Login',
+                          onPressed: () async {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState?.save();
+                              try {
+                                Response res = await UserNetwork.login(
+                                    nameCtr.text, passCtr.text);
+                                if (res.statusCode == 200 && mounted) {
+                                  var resBody = jsonDecode(res.body);
+                                  String role = resBody["message"].toString();
+                                  if (kDebugMode) {
+                                    print("User Role: $role");
+                                  }
+                                  //TODO: add role wise navigation after creating screens.
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AdminDash(
+                                            email: nameCtr.text,
+                                              username: role)));
+                                } else {
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
                                 }
-                                //TODO: add role wise navigation after creating screens.
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminDash(username: nameCtr.text )));
-                              }
-                              else{
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                              }
-                            }
-                            catch(e){
-                              if (kDebugMode) {
-                                print(e);
+                              } catch (e) {
+                                if (kDebugMode) {
+                                  print(e);
+                                }
                               }
                               setState(() {
                                 showSpinner = false;
                               });
                             }
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

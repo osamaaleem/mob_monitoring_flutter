@@ -4,9 +4,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mob_monitoring_flutter/models/selected_location.dart';
 
 class LocationPicker extends StatefulWidget {
-  LocationPicker({super.key,required this.latCont, required this.lonCont});
-  TextEditingController latCont;
-  TextEditingController lonCont;
+  LocationPicker({super.key,required this.position});
+  TextEditingController position;
+  //TextEditingController lonCont;
 
   @override
   _LocationPickerState createState() => _LocationPickerState();
@@ -60,8 +60,9 @@ class _LocationPickerState extends State<LocationPicker> {
         setState(() {
           //_selectedPosition = position;
           SelectedLocation.setLocation(position);
-          widget.latCont.text = SelectedLocation.getLocation().latitude.toString();
-          widget.lonCont.text = SelectedLocation.getLocation().longitude.toString();
+          String lat = SelectedLocation.getLocation().latitude.toString();
+          String lon = SelectedLocation.getLocation().longitude.toString();
+          widget.position.text = "$lat,$lon";
         });
       },
       markers: {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mob_monitoring_flutter/models/locations.dart' as locations;
+import 'package:mob_monitoring_flutter/networking/mob_network.dart';
 
 
 class GoogleMapScreen extends StatefulWidget {
@@ -14,18 +15,22 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   final Map<String, Marker> _markers = {};
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final googleOffices = await locations.getGoogleOffices();
+    final mobs = await MobNetwork().getActiveMobs();
     setState(() {
       _markers.clear();
-      for (final office in googleOffices.offices) {
+      for (final mob in mobs) {
+        if(mob.mobStartLat == null || mob.mobStartLon == null){
+          continue;
+        }
         final marker = Marker(
-          markerId: MarkerId(office.name),
-          position: LatLng(office.lat, office.lng),
+          markerId: MarkerId(mob.name!),
+          position: LatLng(mob.mobStartLat!, mob.mobStartLon!),
           infoWindow: InfoWindow(
-            title: office.name,
-            snippet: office.address,
+            title: mob.name!,
+            snippet: mob.startDate,
           ),
         );
-        _markers[office.name] = marker;
+        _markers[mob.name!] = marker;
       }
     });
   }
@@ -35,13 +40,9 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.green[700],
+        colorSchemeSeed: Colors.teal,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Google Office Locations'),
-          elevation: 2,
-        ),
         body: GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: const CameraPosition(

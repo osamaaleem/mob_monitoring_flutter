@@ -7,7 +7,7 @@ import '../models/mob.dart';
 
 class MobNetwork {
   final String _baseUrl = "https://${IPAddress.getIP()}/api/mobs";
-
+  //final String _baseUrl = "https://192.168.1.5/api/mobs";
 
   Future<List<Mob>> getActiveMobs() async {
     final url = '$_baseUrl/getactivemobs';

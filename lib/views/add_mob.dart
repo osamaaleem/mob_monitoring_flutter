@@ -21,8 +21,7 @@ class _AddMobState extends State<AddMob> {
   TextEditingController sDate = TextEditingController();
   TextEditingController eDate = TextEditingController();
   TextEditingController pStrength = TextEditingController();
-  TextEditingController startLat = TextEditingController();
-  TextEditingController startLon = TextEditingController();
+  TextEditingController position = TextEditingController();
   TextEditingController endLat = TextEditingController();
   TextEditingController endLon = TextEditingController();
 
@@ -39,14 +38,15 @@ class _AddMobState extends State<AddMob> {
       ),
       //resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
-          child: Form(
-            key: _formKey,
+        child: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: ModalProgressHUD(
-                inAsyncCall: showSpinner,
+              child: Form(
+                key: _formKey,
                 child: Column(
                   children: [
                     const SizedBox(
@@ -69,9 +69,6 @@ class _AddMobState extends State<AddMob> {
                           controller: sDate,
                         ),
                         CustomSizedBox.medium(),
-                        DatePickerFormField(
-                            labelText: 'Select End Date', controller: eDate),
-                        CustomSizedBox.medium(),
                         CustomFormField(
                           tec: pStrength,
                           hint: 'Proputed Strength',
@@ -79,36 +76,14 @@ class _AddMobState extends State<AddMob> {
                         ),
                         CustomSizedBox.medium(),
                         TextFormField(
-                          controller: startLat,
+                          controller: position,
                           decoration: InputDecoration(
                             suffixIcon: InkWell(
                               onTap: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => LocationPicker(
-                                              latCont: startLat,
-                                              lonCont: startLon,
-                                            )));
-                              },
-                              child: const Icon(Icons.location_pin),
-                            ),
-                            labelText: 'Select Start Location',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                        CustomSizedBox.medium(),
-                        TextFormField(
-                          controller: endLat,
-                          decoration: InputDecoration(
-                            suffixIcon: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LocationPicker(
-                                              latCont: endLat,
-                                              lonCont: endLon,
+                                        builder: (context) => LocationPicker(position: position,
                                             )));
                               },
                               child: const Icon(Icons.location_pin),
@@ -155,34 +130,43 @@ class _AddMobState extends State<AddMob> {
                               });
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
+                                List<String> cords = position.text.split(',');
+                                if (kDebugMode) {
+                                  print("Making Mob Model");
+                                }
                                 Mob mob = Mob(
                                     name: name.text,
-                                    startDate: DateTime.parse(sDate.text),
-                                    endDate: DateTime.parse(eDate.text),
+                                    startDate: sDate.text,
+                                    endDate: eDate.text,
                                     proputedStrength: int.parse(pStrength.text),
                                     actualStrength: 0,
                                     isActive: _isActive,
-                                    mobStartLat: double.parse(startLat.text),
-                                    mobStartLon: double.parse(startLon.text),
-                                    mobEndLat: double.parse(endLat.text),
-                                    mobEndLon: double.parse(endLon.text));
-                                List<TextEditingController> controllers = [
-                                  name,
-                                  sDate,
-                                  eDate,
-                                  pStrength,
-                                  startLon,
-                                  startLat,
-                                  endLon,
-                                  endLat
-                                ];
-                                for (TextEditingController t in controllers) {
-                                  t.clear();
+                                    mobStartLat: double.parse(cords[0]),
+                                    mobStartLon: double.parse(cords[1]),
+
+                                    );
+                                if (kDebugMode) {
+                                  print(mob.toJson());
                                 }
                                 //Response res = await UserNetwork.AddMobUser(user);
                                 try {
                                   bool res = await MobNetwork().addMob(mob);
                                   if (res && mounted) {
+                                    setState(() {
+                                      showSpinner = false;
+                                      List<TextEditingController> controllers = [
+                                        name,
+                                        sDate,
+                                        eDate,
+                                        pStrength,
+                                        position,
+                                        endLon,
+                                        endLat
+                                      ];
+                                      for (TextEditingController t in controllers) {
+                                        t.clear();
+                                      }
+                                    });
                                     Navigator.pop(context);
                                   }
                                 } catch (e) {

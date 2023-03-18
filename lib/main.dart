@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:mob_monitoring_flutter/views/add_mob.dart';
+import 'package:mob_monitoring_flutter/views/google_map_screen.dart';
 import 'package:mob_monitoring_flutter/views/welcome_screen.dart';
 
 void main() {

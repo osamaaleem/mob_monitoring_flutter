@@ -23,7 +23,7 @@ class _DatePickerFormFieldState extends State<DatePickerFormField> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        widget.controller.text = DateFormat.yMd().format(selectedDate);
+        widget.controller.text = DateFormat("yyyy-MM-dd").format(selectedDate);
       });
     }
   }
@@ -43,7 +43,7 @@ class _DatePickerFormFieldState extends State<DatePickerFormField> {
               onPressed: () {
                 _selectDate(context);
               },
-              icon: Icon(Icons.calendar_today))),
+              icon: const Icon(Icons.calendar_today))),
     );
   }
 }
