@@ -66,11 +66,11 @@ class _AdminDashState extends State<AdminDash> {
                   },
                 ),
                 PopupMenuItem(
-                  child: const Text("Show In Active Mobs"),
+                  child: const Text("Show Inactive Mobs"),
                   onTap: () {
                     setState(() {
                       showOnMap = false;
-                      appBarTitle = "Show Active Mobs";
+                      appBarTitle = "Inactive Mobs";
                       f = MobNetwork().getInActiveMobs();
                     });
                   },
@@ -80,7 +80,7 @@ class _AdminDashState extends State<AdminDash> {
                   onTap: () {
                     setState(() {
                       showOnMap = false;
-                      appBarTitle = "Show Mobs without Supervisors";
+                      appBarTitle = "Mobs without Supervisors";
                       f = MobNetwork().getAllUnassignedUserMobs();
                     });
                   },
@@ -150,8 +150,7 @@ class AdminView extends StatelessWidget {
                 return Column(
                   children: [
                     Card(
-                      color: Colors.white,
-                      elevation: 3,
+                      elevation: 1,
                       clipBehavior: Clip.antiAlias,
                       child: Padding(
                         padding:
@@ -160,8 +159,9 @@ class AdminView extends StatelessWidget {
                           children: [
                             ListTile(
                               title: Text(m[index].name!),
-                              leading:
-                                  Text(m[index].actualStrength!.toString()),
+                              leading:CircleAvatar(
+                                child: Image.asset('assets/crowd.png'),
+                              ),
                               subtitle: Text(
                                   "\nStart Date: $dateString\nActual Strength: ${m[index].actualStrength}"),
                               trailing: const Icon(Icons.people),
@@ -177,7 +177,7 @@ class AdminView extends StatelessWidget {
                                             color: Colors.green),
                                       )
                                     : const Text(
-                                        "In Active",
+                                        "Inactive",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.red),

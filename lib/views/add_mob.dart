@@ -49,10 +49,12 @@ class _AddMobState extends State<AddMob> {
                 key: _formKey,
                 child: Column(
                   children: [
+                    CustomSizedBox.large(),
                     const SizedBox(
-                        height: 150.0,
-                        width: 150.0,
-                        child: Image(image: AssetImage('assets/user.png'))),
+                        height: 100.0,
+                        width: 100.0,
+                        child: Image(image: AssetImage('assets/people.png'))),
+                    CustomSizedBox.large(),
                     CustomSizedBox.large(),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,

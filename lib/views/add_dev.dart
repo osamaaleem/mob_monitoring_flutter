@@ -1,30 +1,29 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:mob_monitoring_flutter/components/custom_elevated_button.dart';
 import 'package:mob_monitoring_flutter/components/custom_form_field.dart';
 import 'package:mob_monitoring_flutter/components/custom_sized_box.dart';
-import 'package:mob_monitoring_flutter/models/user.dart';
-import 'package:mob_monitoring_flutter/networking/user_network.dart';
+import 'package:mob_monitoring_flutter/models/drone.dart';
+import 'package:mob_monitoring_flutter/networking/drone_network.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../components/custom_drop_down.dart';
 
 
 
-class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+class AddDrone extends StatefulWidget {
+  const AddDrone({Key? key}) : super(key: key);
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<AddDrone> createState() => _AddDroneState();
 }
 
-class _RegisterState extends State<Register> {
+class _AddDroneState extends State<AddDrone> {
   TextEditingController name = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController pass = TextEditingController();
-  TextEditingController org = TextEditingController();
-  TextEditingController role = TextEditingController();
+  TextEditingController isAvailable = TextEditingController();
+  TextEditingController battery = TextEditingController();
+  TextEditingController isCharged = TextEditingController();
+  TextEditingController bufferSize = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   bool showSpinner = false;
@@ -44,47 +43,59 @@ class _RegisterState extends State<Register> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    CustomSizedBox.large(),
+                    CustomSizedBox.small(),
                     const SizedBox(
-                        height: 150.0,
-                        width: 150.0,
-                        child: Image(image: AssetImage('assets/user.png'))),
+                        height: 100.0,
+                        width: 100.0,
+                        child: Image(image: AssetImage('assets/drone.png'))),
+                    CustomSizedBox.large(),
                     CustomSizedBox.large(),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomFormField(tec: name, hint: 'Username',keyboardType: TextInputType.text,),
+                        CustomFormField(tec: name, hint: 'Name',keyboardType: TextInputType.text,),
                         CustomSizedBox.medium(),
-                        CustomFormField(tec: email, hint: 'Email',keyboardType: TextInputType.emailAddress,),
+                        CustomFormField(tec: battery, hint: 'Battery',keyboardType: TextInputType.text,),
                         CustomSizedBox.medium(),
-                        CustomFormField(tec: org, hint: 'Organization',keyboardType: TextInputType.text,),
-                        CustomSizedBox.medium(),
-                        CustomFormField(tec: pass, hint: 'Password',helperText: 'Password must contain special & numeric characters',keyboardType: TextInputType.text,),
+                        CustomFormField(tec: bufferSize, hint: 'Buffer Size',keyboardType: TextInputType.text,helperText: 'Size must be in MBs',),
                         CustomSizedBox.medium(),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
-                          child: MyDropdownListWidget(options: const ['Standard','Admin'], controller: role),
+                          child: MyDropdownListWidget(options: const ['Available','Not Available'], controller: isAvailable),
+                        ),
+                        CustomSizedBox.medium(),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: MyDropdownListWidget(options: const ['Charged','Not Charged'], controller: isCharged),
                         ),
                         CustomSizedBox.large(),
-                        CustomElevatedButton(btnText: 'Register', onPressed:  () async {
+                        CustomElevatedButton(btnText: 'Add', onPressed:  () async {
                           setState(() {
                             showSpinner = true;
                           });
                           if(_formKey.currentState!.validate()){
                             _formKey.currentState!.save();
-                            User user = User.all(name: name.text, email: email.text, password: pass.text, organization: org.text, role: role.text);
-                            List<TextEditingController> controllers = [name,email,pass,org,role];
+                            Drone drone = Drone(name: name.text, isAvailable: isAvailable.text == 'Available'?true:false, battery:double.parse(battery.text), isCharged: isCharged.text == 'Charged'?true:false, bufferSize: int.parse(bufferSize.text));
+                            List<TextEditingController> controllers = [name,isAvailable,battery,isCharged,bufferSize];
                             for(TextEditingController t in controllers){
                               t.clear();
                             }
                             //Response res = await UserNetwork.registerUser(user);
                             try{
-                              Response res = await UserNetwork.registerUser(user);
-                              if(res.statusCode == 200 && mounted){
+                              bool res = await DroneNetwork().addDrone(drone);
+                              if(res && mounted){
+                                setState(() {
+                                  showSpinner = false;
+                                });
                                 Navigator.pop(context);
                               }
                             }
                             catch(e){
+                              setState(() {
+                                showSpinner = false;
+                              });
                               if (kDebugMode) {
                                 print(e);
                               }

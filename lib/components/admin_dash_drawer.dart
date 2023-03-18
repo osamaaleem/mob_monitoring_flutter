@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mob_monitoring_flutter/views/add_dev.dart';
 
 import '../views/add_mob.dart';
 import '../views/register.dart';
@@ -12,7 +13,7 @@ class AdminDashDrawer extends StatelessWidget {
 
   final String username;
   final String email;
-
+  final snackBar = const SnackBar(content: Text("Logged Out"));
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,6 +32,7 @@ class AdminDashDrawer extends StatelessWidget {
               child: const Icon(Icons.logout,color: Colors.white,),
               onTap: (){
                 Navigator.of(context).popUntil((route) => route.settings.name == '/login');
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
             )
           ],
@@ -79,7 +81,9 @@ class AdminDashDrawer extends StatelessWidget {
           children: [
             ListTile(
               title: const Text("Add Drone"),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const AddDrone()));
+              },
             ),
             ListTile(
               title: const Text("View Drones"),
