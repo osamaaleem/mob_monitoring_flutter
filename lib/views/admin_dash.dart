@@ -159,8 +159,8 @@ class AdminView extends StatelessWidget {
                           children: [
                             ListTile(
                               title: Text(m[index].name!),
-                              leading:CircleAvatar(
-                                child: Image.asset('assets/crowd.png'),
+                              leading:const CircleAvatar(
+                                backgroundImage: AssetImage('assets/crowd.png'),
                               ),
                               subtitle: Text(
                                   "\nStart Date: $dateString\nActual Strength: ${m[index].actualStrength}"),

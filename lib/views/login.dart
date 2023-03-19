@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:mob_monitoring_flutter/views/admin_dash.dart';
+import 'package:mob_monitoring_flutter/views/standard_dash.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../components/custom_elevated_button.dart';
 import '../components/custom_sized_box.dart';
@@ -29,7 +30,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 3,
+        elevation: 5,
         title: const Text("Welcome!"),
       ),
       resizeToAvoidBottomInset: true,
@@ -87,13 +88,23 @@ class _LoginState extends State<Login> {
                                   String name = nameCtr.text;
                                   nameCtr.clear();
                                   passCtr.clear();
-                                  //TODO: add role wise navigation after creating screens.
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => AdminDash(
-                                            email: name,
-                                              username: role)));
+                                  if(role == 'Admin'){
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => StandardUserDash(
+                                                email: name,
+                                                role: role)));
+                                  }
+                                  else{
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => AdminDash(
+                                                email: name,
+                                                username: role)));
+                                  }
+
                                 } else {
                                   setState(() {
                                     showSpinner = false;

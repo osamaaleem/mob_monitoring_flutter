@@ -27,11 +27,15 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Mob Monitoring',
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorScheme: darkColorSchemeTeal
+      ),
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: lightColorSchemeOlive
+        colorScheme: lightColorSchemeTeal,
       ),
-      home: const SplashPage(),
+      home:const SplashPage(),
     );
   }
 }
