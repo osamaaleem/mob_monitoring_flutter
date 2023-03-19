@@ -88,7 +88,7 @@ class _LoginState extends State<Login> {
                                   String name = nameCtr.text;
                                   nameCtr.clear();
                                   passCtr.clear();
-                                  if(role == 'Admin'){
+                                  if(role == 'Standard'){
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

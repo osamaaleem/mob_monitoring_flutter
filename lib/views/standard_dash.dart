@@ -7,7 +7,8 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class StandardUserDash extends StatefulWidget {
-  StandardUserDash({Key? key, required this.email,required this.role}) : super(key: key);
+  StandardUserDash({Key? key, required this.email, required this.role})
+      : super(key: key);
   String email;
   String role;
   @override
@@ -21,8 +22,8 @@ class _StandardUserDashState extends State<StandardUserDash> {
         drawer: Drawer(
           child: Padding(
             padding: const EdgeInsets.only(top: 80.0),
-            child: StandardDashDrawer(
-                email: widget.email, username: widget.role),
+            child:
+                StandardDashDrawer(email: widget.email, username: widget.role),
           ),
         ),
         appBar: AppBar(
@@ -33,7 +34,8 @@ class _StandardUserDashState extends State<StandardUserDash> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16, 40, 0, 16),
+                padding: EdgeInsetsDirectional.fromSTEB(
+                    16, 40, MediaQuery.of(context).size.width * 0.03, 16),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -235,43 +237,49 @@ class _StandardUserDashState extends State<StandardUserDash> {
                               ],
                             ),
                             CustomSizedBox.large(),
-                            LinearPercentIndicator(
-                              leading: Icon(
-                                Icons.battery_6_bar_sharp,
-                                color: Theme.of(context).colorScheme.secondary,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 5,right: 5),
+                              child: LinearPercentIndicator(
+                                leading: Icon(
+                                  Icons.battery_6_bar_sharp,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
+                                lineHeight: 25,
+                                progressColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                percent: 0.70,
+                                animation: true,
+                                center: Text('60%',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondaryContainer)),
                               ),
-                              lineHeight: 25,
-                              progressColor:
-                                  Theme.of(context).colorScheme.secondary,
-                              percent: 0.70,
-                              animation: true,
-                              center: Text('60%',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondaryContainer)),
                             ),
                             CustomSizedBox.large(),
-                            LinearPercentIndicator(
-                              leading: Icon(Icons.sd_storage,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary),
-                              lineHeight: 25,
-                              progressColor:
-                                  Theme.of(context).colorScheme.secondary,
-                              percent: 0.70,
-                              animation: true,
-                              center: Text('50 MB',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondaryContainer)),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 5, right: 5),
+                              child: LinearPercentIndicator(
+                                leading: Icon(Icons.sd_storage,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary),
+                                lineHeight: 25,
+                                progressColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                percent: 0.70,
+                                animation: true,
+                                center: Text('50 MB',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondaryContainer)),
+                              ),
                             ),
                           ],
                         ),
