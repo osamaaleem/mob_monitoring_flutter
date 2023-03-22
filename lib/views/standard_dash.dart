@@ -35,7 +35,7 @@ class _StandardUserDashState extends State<StandardUserDash> {
             children: [
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(
-                    16, 40, MediaQuery.of(context).size.width * 0.03, 16),
+                    16, 40, MediaQuery.of(context).size.width * 0.04, 16),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -63,8 +63,20 @@ class _StandardUserDashState extends State<StandardUserDash> {
                       padding: const EdgeInsets.only(top: 30),
                       child: Stack(
                         children: [
-                          MapContainer(),
-                          Positioned(
+                          //MapContainer(),
+                          Container(
+                            decoration: BoxDecoration(
+                              color:
+                              Theme.of(context).cardTheme.color,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            height: 280,
+                            width: 380,
+                            child: const Center(
+                              child: Text('Assigned Mob Map Display'),
+                            ),
+                          ),
+                          /**Positioned(
                               top: 8,
                               left: 8,
                               child: FilledButton.tonalIcon(
@@ -80,7 +92,7 @@ class _StandardUserDashState extends State<StandardUserDash> {
                                   size: 30,
                                 ),
                                 label: const Text('View Full Screen'),
-                              )),
+                              )),**/
                         ],
                       ),
                     ),

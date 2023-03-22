@@ -11,11 +11,11 @@ class ViewDrones extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Drones'),
+        title: const Text('View Users'),
       ),
       body: FutureBuilder(
         future:
-            DroneNetwork().fetchDrones().timeout(const Duration(seconds: 60)),
+        DroneNetwork().fetchDrones().timeout(const Duration(seconds: 60)),
         builder: (ctx, snapshot) {
           if (snapshot.hasData) {
             List<Drone> l = snapshot.data!;

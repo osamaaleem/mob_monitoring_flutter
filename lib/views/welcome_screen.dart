@@ -42,7 +42,7 @@ class _WelcomeState extends State<Welcome> {
                   CustomFormField(
                     tec: ipCtr,
                     hint: "Enter IP Address",
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.number,
                   ),
                   CustomSizedBox.large(),
                   CustomSizedBox.small(),

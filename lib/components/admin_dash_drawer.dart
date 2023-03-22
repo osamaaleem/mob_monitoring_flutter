@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mob_monitoring_flutter/views/add_dev.dart';
+import 'package:mob_monitoring_flutter/views/view_drones.dart';
 
 import '../views/add_mob.dart';
 import '../views/register.dart';
 
 class AdminDashDrawer extends StatelessWidget {
-  const AdminDashDrawer({
-    super.key,
-    required this.email,
-    required this.username
-  });
+  const AdminDashDrawer(
+      {super.key, required this.email, required this.username});
 
   final String username;
   final String email;
@@ -29,9 +27,13 @@ class AdminDashDrawer extends StatelessWidget {
           ),
           otherAccountsPictures: [
             GestureDetector(
-              child: const Icon(Icons.logout,color: Colors.white,),
-              onTap: (){
-                Navigator.of(context).popUntil((route) => route.settings.name == '/login');
+              child: const Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              onTap: () {
+                Navigator.of(context)
+                    .popUntil((route) => route.settings.name == '/login');
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
             )
@@ -50,10 +52,8 @@ class AdminDashDrawer extends StatelessWidget {
             ListTile(
               title: const Text("Add User"),
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Register()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Register()));
               },
             )
           ],
@@ -66,10 +66,8 @@ class AdminDashDrawer extends StatelessWidget {
             ListTile(
               title: const Text("Add Mob"),
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AddMob()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const AddMob()));
               },
             )
           ],
@@ -82,12 +80,18 @@ class AdminDashDrawer extends StatelessWidget {
             ListTile(
               title: const Text("Add Drone"),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const AddDrone()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const AddDrone()));
               },
             ),
             ListTile(
               title: const Text("View Drones"),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ViewDrones()));
+              },
             )
           ],
         ),

@@ -1,5 +1,7 @@
 
 
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:mob_monitoring_flutter/models/ip_address.dart';
@@ -16,6 +18,13 @@ class UserNetwork{
         body: user.toJson()
     );
     return res;
+  }
+  static Future<List<User>> getAllUsers() async {
+    String url = "https://${IPAddress.getIP()}/api/users/getallusers";
+    var response = await http.get(Uri.parse(url));
+    final List<dynamic> jsonList = json.decode(response.body);
+    return jsonList.map((json) => User.fromJson(json)).toList();
+
   }
   static Future<http.Response> login(String email,String password) async {
     String url = "https://${IPAddress.getIP()}/api/users/login";

@@ -11,16 +11,16 @@ class Drone {
       required this.isCharged,
       required this.bufferSize});
   Map toJson() => {
-        'name': name,
-        'isAvailable': isAvailable,
-        'battery': battery,
-        'isCharged': isCharged,
-        'bufferSize': bufferSize
+        'Name': name,
+        'IsAvailable': isAvailable.toString(),
+        'Battery': battery.toString(),
+        'IsCharged': isCharged.toString(),
+        'BufferSizeMb': bufferSize.toString()
       };
   static Drone fromJson(Map<String, dynamic> json) => Drone(
-      name: json['name'].toString(),
-      isAvailable: json['isAvailable'],
-      battery: double.parse(json['battery']),
-      isCharged: json['isCharged'],
-      bufferSize: int.parse(json['bufferSize']));
+      name: json['Name'].toString(),
+      isAvailable: json['IsAvailable'].toString() == 'true'? true:false,
+      battery: double.parse(json['Battery'].toString()),
+      isCharged: json['IsCharged'].toString() == 'true'? true: false,
+      bufferSize: int.parse(json['BufferSizeMb'].toString()));
 }

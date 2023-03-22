@@ -1,21 +1,32 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:mob_monitoring_flutter/models/ip_address.dart';
 
 import '../models/drone.dart';
 
 class DroneNetwork {
-  final String apiUrl = "https://${IPAddress.getIP()}:44381/api/drones";
+  final String apiUrl = "https://${IPAddress.getIP()}/api/drones";
 
   DroneNetwork();
 
   Future<List<Drone>> fetchDrones() async {
-    final url = '$apiUrl/getalldrone';
+    final url = '$apiUrl/GetAllDrones';
     final response = await http.get(Uri.parse(url));
+    if(response.statusCode != 200){
+      print(response.statusCode);
+    }
     final jsonData = json.decode(response.body);
+    if(response.statusCode != 200){
+      print(response.statusCode);
+    }
     List<Drone> drones = [];
     for (var item in jsonData) {
       drones.add(Drone.fromJson(item));
+    }
+    if(kDebugMode){
+      print(drones);
     }
     return drones;
   }
@@ -26,15 +37,11 @@ class DroneNetwork {
     if(response.statusCode == 200){
       return true;
     }
+    if(response.statusCode == HttpStatus.internalServerError){
+      if(kDebugMode){
+        print(HttpStatus.internalServerError);
+      }
+    }
     return false;
-  }
-  Future<List<Drone>> getAvailableDrones() async {
-    final drones = await fetchDrones();
-    return drones.where((drone) => drone.isAvailable).toList();
-  }
-
-  Future<List<Drone>> getChargedDrones() async {
-    final drones = await fetchDrones();
-    return drones.where((drone) => drone.isCharged).toList();
   }
 }

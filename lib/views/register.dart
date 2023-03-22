@@ -8,9 +8,7 @@ import 'package:mob_monitoring_flutter/models/user.dart';
 import 'package:mob_monitoring_flutter/networking/user_network.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../components/custom_drop_down.dart';
-
-
+import '../components/custom_drop_down_2.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -25,22 +23,30 @@ class _RegisterState extends State<Register> {
   TextEditingController pass = TextEditingController();
   TextEditingController org = TextEditingController();
   TextEditingController role = TextEditingController();
+  String _selectedValue = 'Standard';
+  final List<String> genderItems = [
+    'Male',
+    'Female',
+  ];
 
   final _formKey = GlobalKey<FormState>();
   bool showSpinner = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Register User"),),
+      appBar: AppBar(
+        title: const Text("Register User"),
+      ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 30.0),
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: ModalProgressHUD(
-                inAsyncCall: showSpinner,
+        child: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -56,47 +62,93 @@ class _RegisterState extends State<Register> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomFormField(tec: name, hint: 'Username',keyboardType: TextInputType.text,),
+                        CustomFormField(
+                          tec: name,
+                          hint: 'Username',
+                          keyboardType: TextInputType.text,
+                        ),
                         CustomSizedBox.medium(),
-                        CustomFormField(tec: email, hint: 'Email',keyboardType: TextInputType.emailAddress,),
+                        CustomFormField(
+                          tec: email,
+                          hint: 'Email',
+                          keyboardType: TextInputType.emailAddress,
+                        ),
                         CustomSizedBox.medium(),
-                        CustomFormField(tec: org, hint: 'Organization',keyboardType: TextInputType.text,),
+                        CustomFormField(
+                          tec: org,
+                          hint: 'Organization',
+                          keyboardType: TextInputType.text,
+                        ),
                         CustomSizedBox.medium(),
-                        CustomFormField(tec: pass, hint: 'Password',helperText: 'Password must contain special & numeric characters',keyboardType: TextInputType.text,),
+                        CustomFormField(
+                          tec: pass,
+                          hint: 'Password',
+                          helperText:
+                              'Password must contain special & numeric characters',
+                          keyboardType: TextInputType.text,
+                        ),
                         CustomSizedBox.medium(),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: MyDropdownListWidget(options: const ['Standard','Admin'], controller: role),
+                        CustomDropdownButton2(
+                          hint: 'Charge Status',
+                          value: _selectedValue,
+                          dropdownItems: const ['Standard', 'Admin'],
+                          onChanged: (newValue) {
+                            setState(() {
+                              _selectedValue = newValue!;
+                              role.text = newValue;
+                            });
+                          },
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          buttonWidth: double.infinity,
+                          buttonHeight: 63.0,
+                          iconSize: 35,
                         ),
                         CustomSizedBox.large(),
-                        CustomElevatedButton(btnText: 'Register', onPressed:  () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          if(_formKey.currentState!.validate()){
-                            _formKey.currentState!.save();
-                            User user = User.all(name: name.text, email: email.text, password: pass.text, organization: org.text, role: role.text);
-                            List<TextEditingController> controllers = [name,email,pass,org,role];
-                            for(TextEditingController t in controllers){
-                              t.clear();
-                            }
-                            //Response res = await UserNetwork.registerUser(user);
-                            try{
-                              Response res = await UserNetwork.registerUser(user);
-                              if(res.statusCode == 200 && mounted){
-                                Navigator.pop(context);
+                        CustomElevatedButton(
+                            btnText: 'Register',
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                setState(() {
+                                  showSpinner = true;
+                                });
+                                User user = User.all(
+                                    name: name.text,
+                                    email: email.text,
+                                    password: pass.text,
+                                    organization: org.text,
+                                    role: role.text);
+                                if (kDebugMode) {
+                                  print("User Role: ${user.role}");
+                                }
+                                List<TextEditingController> controllers = [
+                                  name,
+                                  email,
+                                  pass,
+                                  org,
+                                  role
+                                ];
+                                for (TextEditingController t in controllers) {
+                                  t.clear();
+                                }
+                                //Response res = await UserNetwork.registerUser(user);
+                                try {
+                                  Response res =
+                                      await UserNetwork.registerUser(user);
+                                  if (res.statusCode == 200 && mounted) {
+                                    setState(() {
+                                      showSpinner = false;
+                                    });
+                                    Navigator.pop(context);
+                                  }
+                                } catch (e) {
+                                  if (kDebugMode) {
+                                    print(e);
+                                  }
+                                  showSpinner = false;
+                                }
                               }
-                            }
-                            catch(e){
-                              if (kDebugMode) {
-                                print(e);
-                              }
-                              setState(() {
-                                showSpinner = false;
-                              });
-                            }
-                          }
-                        })
+                            })
                       ],
                     ),
                   ],

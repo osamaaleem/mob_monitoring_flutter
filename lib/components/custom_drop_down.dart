@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class MyDropdownListWidget extends StatefulWidget {
   final List<String> options;
-  final TextEditingController controller;
+  TextEditingController controller;
 
-  const MyDropdownListWidget({
+  MyDropdownListWidget({
     Key? key,
     required this.options,
     required this.controller,
@@ -13,30 +13,22 @@ class MyDropdownListWidget extends StatefulWidget {
   @override
   _MyDropdownListWidgetState createState() => _MyDropdownListWidgetState();
 }
-
 class _MyDropdownListWidgetState extends State<MyDropdownListWidget> {
-  late String _selectedOption;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedOption = widget.options.first;
-  }
 
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
-      value: _selectedOption,
+      value: widget.options.first,
       onChanged: (newValue) {
         setState(() {
-          _selectedOption = newValue!;
-          widget.controller.text = newValue;
+          //_selectedOption = newValue.toString()!;
+          widget.controller.text = newValue!.toString();
         });
       },
-      items: widget.options.map((option) {
-        return DropdownMenuItem(
-          value: option,
-          child: Text(option),
+      items: widget.options.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
         );
       }).toList(),
     );

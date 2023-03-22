@@ -8,8 +8,8 @@ class CustomElevatedButton extends StatelessWidget {
     fontSize: 20
   ));
   final ButtonStyle styleElevated = ElevatedButton.styleFrom(textStyle: const TextStyle(
-      fontSize: 20
-  ),elevation: 2);
+      fontSize: 17
+  ),elevation: 1);
   @override
   Widget build(BuildContext context) {
     return SizedBox(

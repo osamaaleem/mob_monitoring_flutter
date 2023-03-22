@@ -12,4 +12,14 @@ class User{
     'organization': organization,
     'role': role
   };
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User.all(
+      name: json['name'].toString(),
+      email: json['email'].toString(),
+      password: json['password'].toString(),
+      organization: json['organization'].toString(),
+      role: json['role'].toString(),
+    );
+  }
+
 }

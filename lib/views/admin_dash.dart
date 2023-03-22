@@ -36,7 +36,7 @@ class _AdminDashState extends State<AdminDash> {
           PopupMenuButton<Text>(
             itemBuilder: (context) {
               return [
-                PopupMenuItem(
+                /**PopupMenuItem(
                   child: const Text("View On Map"),
                   onTap: () {
                     setState(() {
@@ -44,7 +44,7 @@ class _AdminDashState extends State<AdminDash> {
                       showOnMap = true;
                     });
                   },
-                ),
+                ),**/
                 PopupMenuItem(
                   child: const Text("Show All Mobs"),
                   onTap: () {
@@ -120,7 +120,7 @@ class _AdminDashState extends State<AdminDash> {
           )
         ],
       ),
-      body:showOnMap? const GoogleMapScreen():  AdminView(f: f),
+      body: showOnMap ? const GoogleMapScreen() : AdminView(f: f),
     );
   }
 }
@@ -138,8 +138,16 @@ class AdminView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8.0, 25.0, 8.0, 15.0),
       child: FutureBuilder(
-        future: f,
+        future: f.timeout(const Duration(seconds: 5)),
         builder: (ctx, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'API Unreachable',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            );
+          }
           if (snapshot.hasData) {
             List<Mob>? m = snapshot.data;
             return ListView.builder(
@@ -153,13 +161,12 @@ class AdminView extends StatelessWidget {
                       elevation: 1,
                       clipBehavior: Clip.antiAlias,
                       child: Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(5.0, 16.0, 5.0, 5.0),
+                        padding: const EdgeInsets.fromLTRB(5.0, 16.0, 5.0, 5.0),
                         child: Column(
                           children: [
                             ListTile(
                               title: Text(m[index].name!),
-                              leading:const CircleAvatar(
+                              leading: const CircleAvatar(
                                 backgroundImage: AssetImage('assets/crowd.png'),
                               ),
                               subtitle: Text(
@@ -219,4 +226,3 @@ class AdminView extends StatelessWidget {
     );
   }
 }
-
