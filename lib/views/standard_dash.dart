@@ -66,33 +66,33 @@ class _StandardUserDashState extends State<StandardUserDash> {
                           //MapContainer(),
                           Container(
                             decoration: BoxDecoration(
-                              color:
-                              Theme.of(context).cardTheme.color,
+                              color: Theme.of(context).cardTheme.color,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             height: 280,
                             width: 380,
-                            child: const Center(
-                              child: Text('Assigned Mob Map Display'),
+                            child:  Center(
+                              child: MapContainer(),
                             ),
                           ),
-                          /**Positioned(
-                              top: 8,
-                              left: 8,
-                              child: FilledButton.tonalIcon(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const FullScreenMap()));
-                                },
-                                icon: const Icon(
-                                  Icons.fullscreen_rounded,
-                                  size: 30,
-                                ),
-                                label: const Text('View Full Screen'),
-                              )),**/
+                          Positioned(
+                            top: 8,
+                            left: 8,
+                            child: FilledButton.tonalIcon(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const FullScreenMap()));
+                              },
+                              icon: const Icon(
+                                Icons.fullscreen_rounded,
+                                size: 30,
+                              ),
+                              label: const Text('View Full Screen'),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -250,11 +250,12 @@ class _StandardUserDashState extends State<StandardUserDash> {
                             ),
                             CustomSizedBox.large(),
                             Padding(
-                              padding: const EdgeInsets.only(left: 5,right: 5),
+                              padding: const EdgeInsets.only(left: 5, right: 5),
                               child: LinearPercentIndicator(
                                 leading: Icon(
                                   Icons.battery_6_bar_sharp,
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                 ),
                                 lineHeight: 25,
                                 progressColor:
@@ -276,8 +277,9 @@ class _StandardUserDashState extends State<StandardUserDash> {
                               padding: const EdgeInsets.only(left: 5, right: 5),
                               child: LinearPercentIndicator(
                                 leading: Icon(Icons.sd_storage,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
                                 lineHeight: 25,
                                 progressColor:
                                     Theme.of(context).colorScheme.secondary,

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:mob_monitoring_flutter/models/mob.dart';
+
 class Management {
-  List<String> mobs;
+  List<Mob> mobs;
   List<String> users;
   List<String> operators;
   List<String> drones;
@@ -17,7 +19,7 @@ class Management {
 
   factory Management.fromJson(Map<String, dynamic> json) {
     return Management(
-      mobs: List<String>.from(json['Mobs']),
+      mobs: List<dynamic>.from(json['Mobs']).map((m) => Mob.fromJson(m)).toList(),
       users: List<String>.from(json['Users']),
       operators: List<String>.from(json['Operators']),
       drones: List<String>.from(json['Drones']),
@@ -43,4 +45,13 @@ class Management {
     Map<String, dynamic> jsonMap = jsonDecode(jsonString);
     return Management.fromJson(jsonMap);
   }
+}
+
+class ManagementPost{
+  int mobID;
+  String user;
+  String operator;
+  String drone;
+  String redZone;
+  ManagementPost({required this.mobID,required this.user,required this.operator,required this.drone,required this.redZone});
 }

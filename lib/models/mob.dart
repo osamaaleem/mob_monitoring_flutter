@@ -1,4 +1,5 @@
 class Mob {
+  int? mobID;
   String? name;
   String? startDate;
   String? endDate;
@@ -11,6 +12,7 @@ class Mob {
   double? mobEndLon;
 
   Mob({
+    this.mobID,
     this.name,
     this.startDate,
     this.endDate,
@@ -24,6 +26,7 @@ class Mob {
   });
 
   factory Mob.fromJson(Map<String, dynamic> json) => Mob(
+        mobID: json['MobID'],
         name: json['Name'],
         startDate: json['StartDate'].toString(),
         endDate: json['EndDate'].toString(),

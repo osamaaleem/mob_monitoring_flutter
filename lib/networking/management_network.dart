@@ -16,4 +16,8 @@ class ManagementNetwork{
       throw Exception('Failed to fetch data');
     }
   }
+  Future<bool> setManagementData() async {
+
+    return false;
+  }
 }

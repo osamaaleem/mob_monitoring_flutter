@@ -36,7 +36,7 @@ class _AdminDashState extends State<AdminDash> {
           PopupMenuButton<Text>(
             itemBuilder: (context) {
               return [
-                /**PopupMenuItem(
+                PopupMenuItem(
                   child: const Text("View On Map"),
                   onTap: () {
                     setState(() {
@@ -44,7 +44,7 @@ class _AdminDashState extends State<AdminDash> {
                       showOnMap = true;
                     });
                   },
-                ),**/
+                ),
                 PopupMenuItem(
                   child: const Text("Show All Mobs"),
                   onTap: () {
