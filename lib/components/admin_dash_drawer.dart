@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mob_monitoring_flutter/views/add_dev.dart';
+
 import 'package:mob_monitoring_flutter/views/view_drones.dart';
 
 import '../views/add_mob.dart';
@@ -69,6 +70,36 @@ class AdminDashDrawer extends StatelessWidget {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const AddMob()));
               },
+            ),
+            ListTile(
+              title: const Text("Manage Mob"),
+              onTap: () {
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => const ManageMob()));
+              },
+            )
+          ],
+        ),
+        ExpansionTile(
+          title: const Text("Manage Redzones"),
+          leading: const Icon(Icons.people_alt_sharp),
+          childrenPadding: const EdgeInsets.all(5.0),
+          children: [
+            ListTile(
+              title: const Text("View Redzones"),
+              onTap: () {
+                //TODO: Add Redzone View
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => const AddMob()));
+              },
+            ),
+            ListTile(
+              title: const Text("Add Redzone"),
+              //TODO: Add Redzone Page
+              onTap: () {
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => const ManageMob()));
+              },
             )
           ],
         ),
@@ -86,6 +117,15 @@ class AdminDashDrawer extends StatelessWidget {
             ),
             ListTile(
               title: const Text("View Drones"),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ViewDrones()));
+              },
+            ),
+            ListTile(
+              title: const Text("Add Operator"),
               onTap: () {
                 Navigator.push(
                     context,

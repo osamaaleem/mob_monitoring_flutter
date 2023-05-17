@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mob_monitoring_flutter/models/mob.dart';
 import 'package:mob_monitoring_flutter/views/google_map_screen.dart';
 
 import '../components/admin_dash_drawer.dart';
+import '../components/custom_sized_box.dart';
 import '../networking/mob_network.dart';
 
 class AdminDash extends StatefulWidget {
@@ -15,9 +17,9 @@ class AdminDash extends StatefulWidget {
 }
 
 class _AdminDashState extends State<AdminDash> {
-  Future<List<Mob>> f = MobNetwork().getAllMobs();
+  Future<List<Mob>> f = MobNetwork().getActiveMobs();
   bool showOnMap = false;
-  String appBarTitle = "All Mobs";
+  String appBarTitle = "Active Mobs";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,6 +157,7 @@ class AdminView extends StatelessWidget {
               itemCount: m!.length,
               itemBuilder: (BuildContext context, int index) {
                 String dateString = m[index].startDate!;
+                DateTime mobDate = DateTime.parse(dateString);
                 return Column(
                   children: [
                     Card(
@@ -164,13 +167,19 @@ class AdminView extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(5.0, 16.0, 5.0, 5.0),
                         child: Column(
                           children: [
+                            Container(
+                              color: Colors.white,
+                              height: 230,
+                              width: double.infinity,
+                            ),
+                            CustomSizedBox.medium(),
                             ListTile(
                               title: Text(m[index].name!),
                               leading: const CircleAvatar(
                                 backgroundImage: AssetImage('assets/crowd.png'),
                               ),
                               subtitle: Text(
-                                  "\nStart Date: $dateString\nActual Strength: ${m[index].actualStrength}"),
+                                  "\nStart Date: ${DateFormat.yMd().format(mobDate).toString()}\nActual Strength: ${m[index].actualStrength}"),
                               trailing: const Icon(Icons.people),
                             ),
                             Padding(

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -45,10 +46,25 @@ class _LoginState extends State<Login> {
                 children: [
                   CustomSizedBox.large(),
                   CustomSizedBox.medium(),
+                  // SizedBox(
+                  //   width: 350,
+                  //   child: DefaultTextStyle(style: const TextStyle(fontSize: 25.0,fontFamily: 'Agne',color: Colors.black),
+                  //     child: AnimatedTextKit(
+                  //       animatedTexts: [
+                  //         TypewriterAnimatedText('Mob Monitoring System'),
+                  //         //TypewriterAnimatedText('Monitoring'),
+                  //         //TypewriterAnimatedText('System')
+                  //       ],
+                  //     ),),
+                  //
+                  // ),
+                  // CustomSizedBox.large(),
+                  // CustomSizedBox.medium(),
                   const SizedBox(
                       height: 100.0,
                       width: 100.0,
                       child: Image(image: AssetImage('assets/user.png'))),
+
                   CustomSizedBox.large(),
                   CustomSizedBox.large(),
                   Form(

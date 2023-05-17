@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.5
   modal_progress_hud_nsn: ^0.3.0
-  google_maps_flutter: ^2.2.5
+  google_maps_flutter: ^2.2.6
   json_serializable: ^6.6.1
   google_maps_place_picker_mb: ^3.0.1
   flutter_config: ^2.0.0
@@ -49,6 +49,10 @@ dependencies:
   animations: ^2.0.7
   percent_indicator: ^4.2.3
   dropdown_button2: ^2.0.0
+  animated_text_kit: ^4.2.2
+  google_map_polyline_new: ^0.3.0+2
+  google_maps_webservice: ^0.0.20-nullsafety.5
+  flutter_google_places: ^0.3.0
 
 dev_dependencies:
   flutter_test:
