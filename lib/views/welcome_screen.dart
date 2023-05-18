@@ -7,6 +7,7 @@ import 'package:mob_monitoring_flutter/components/custom_sized_box.dart';
 import 'package:mob_monitoring_flutter/components/custom_elevated_button.dart';
 import 'package:mob_monitoring_flutter/models/ip_address.dart';
 import 'package:mob_monitoring_flutter/views/login.dart';
+import 'package:mob_monitoring_flutter/views/redzone_selector.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class Welcome extends StatefulWidget {
@@ -72,6 +73,7 @@ class _WelcomeState extends State<Welcome> {
                               settings: const RouteSettings(name: '/login'),
                             ),
                           );
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => RedZoneSelectorMap(redZoneId: 6)));
                           socket.destroy();
                         }).catchError((error) {
                           if (kDebugMode) {

@@ -118,7 +118,7 @@ class _LoginState extends State<Login> {
                                         MaterialPageRoute(
                                             builder: (context) => AdminDash(
                                                 email: name,
-                                                username: role)));
+                                                username: role),settings: const RouteSettings(name: '/AdminDash')));
                                   }
 
                                 } else {

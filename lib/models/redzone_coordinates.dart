@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 class RedZoneCoordinates {
-  int coordinateID;
+  int? coordinateID;
   int? redZoneID_FK;
   double? redZoneLat;
   double? redZoneLon;
 
   RedZoneCoordinates({
-    required this.coordinateID,
+    this.coordinateID,
     this.redZoneID_FK,
     this.redZoneLat,
     this.redZoneLon,

@@ -55,11 +55,11 @@ class _SplashPageState extends State<SplashPage> {
           fontWeight: FontWeight.bold,
         ),
       ),
-      backgroundColor: Colors.grey.shade400,
+      backgroundColor: Colors.grey.shade300,
       showLoader: true,
       loadingText: const Text("Loading..."),
-      navigator:const Welcome(),
-      durationInSeconds: 5,
+      navigator: const Welcome(),
+      durationInSeconds: 3,
     );
   }
 }

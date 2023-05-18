@@ -10,14 +10,25 @@ class RedzoneNetwork {
   //final String _baseUrl = "https://192.168.1.5/api/mobs";
 
 
+  Future<int> getRedzoneIdByName(String name) async {
+    final url = '$_baseUrl/GetRedZoneIdByName?name=$name';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body);
+      // if(kDebugMode){
+      //   var json = jsonDecode(response.body);
+      //   print(json[0]);
+      // }
+      return json[0];
+    } else {
+      throw Exception();
+    }
+  }
   Future<List<Redzone>> getAllZones() async {
     final url = '$_baseUrl/getallzones';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
-      if (kDebugMode) {
-        print(response.body);
-      }
       return jsonList.map((json) => Redzone.fromJson(json)).toList();
     } else {
       throw Exception('Failed to fetch mobs');
@@ -88,11 +99,11 @@ class RedzoneNetwork {
   }
   Future<bool> addRedzone(Redzone r){
     final url = '$_baseUrl/addredzone';
-    return http.post(Uri.parse(url), body: json.encode(r.toJson())).then((response) {
+    return http.post(Uri.parse(url), body: r.toJson()).then((response) {
       if (response.statusCode == 200) {
         return true;
       } else {
-        throw Exception('Failed to fetch mob');
+        throw Exception('Failed to add mob');
       }
     });
   }

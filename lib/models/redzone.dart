@@ -1,8 +1,9 @@
 class Redzone{
-  int id;
+  int? id;
   String name;
   bool isActive;
   Redzone({required this.id, required this.name, required this.isActive});
+  Redzone.createObj({required this.name, required this.isActive});
   factory Redzone.fromJson(Map<String, dynamic> json) {
     return Redzone(
       id: json['id'],
@@ -11,8 +12,7 @@ class Redzone{
     );
   }
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "isActive": isActive,
+    'name': name,
+    'isActive': isActive.toString(),
   };
 }

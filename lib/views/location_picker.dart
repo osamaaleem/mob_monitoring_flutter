@@ -55,6 +55,12 @@ class _LocationPickerState extends State<LocationPicker> {
 
   GoogleMap buildGoogleMap() {
     return GoogleMap(
+      mapToolbarEnabled: true,
+      myLocationButtonEnabled: true,
+      myLocationEnabled: true,
+      trafficEnabled: true,
+      buildingsEnabled: true,
+      mapType: MapType.normal,
       initialCameraPosition: CameraPosition(
         target: _initialPosition,
         zoom: 12,
