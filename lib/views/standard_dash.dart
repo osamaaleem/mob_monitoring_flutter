@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mob_monitoring_flutter/components/custom_sized_box.dart';
 import 'package:mob_monitoring_flutter/components/full_screen_map.dart';
 import 'package:mob_monitoring_flutter/components/map_display_container.dart';
@@ -16,6 +17,7 @@ class StandardUserDash extends StatefulWidget {
 }
 
 class _StandardUserDashState extends State<StandardUserDash> {
+  List<LatLng> _routeCoords = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -7,6 +7,7 @@ import 'package:mob_monitoring_flutter/components/custom_sized_box.dart';
 import 'package:mob_monitoring_flutter/components/custom_elevated_button.dart';
 import 'package:mob_monitoring_flutter/models/ip_address.dart';
 import 'package:mob_monitoring_flutter/views/login.dart';
+import 'package:mob_monitoring_flutter/views/mob_demo.dart';
 import 'package:mob_monitoring_flutter/views/redzone_selector.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -50,6 +51,7 @@ class _WelcomeState extends State<Welcome> {
                   CustomElevatedButton(
                     btnText: "Enter",
                     onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MapRouteSelector()));
                       setState(() {
                         _showSpinner = true;
                       });
@@ -66,13 +68,14 @@ class _WelcomeState extends State<Welcome> {
                             _showSpinner = false;
                           });
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Login(),
-                              settings: const RouteSettings(name: '/login'),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const Login(),
+                          //     settings: const RouteSettings(name: '/login'),
+                          //   ),
+                          // );
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MapRouteSelector()));
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => RedZoneSelectorMap(redZoneId: 6)));
                           socket.destroy();
                         }).catchError((error) {
@@ -81,8 +84,9 @@ class _WelcomeState extends State<Welcome> {
                             setState(() {
                               _showSpinner = false;
                             });
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => MapRouteSelector()));
+                            // ScaffoldMessenger.of(context)
+                            //     .showSnackBar(snackBar);
                           }
                         });
                         //Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));

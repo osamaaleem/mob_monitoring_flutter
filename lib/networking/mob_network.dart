@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:http/http.dart' as http;
 import 'package:mob_monitoring_flutter/models/ip_address.dart';
 
@@ -19,6 +20,8 @@ class MobNetwork {
       throw Exception('Failed to fetch mobs');
     }
   }
+
+  //Future<List<LatLng>> get
 
   Future<List<Mob>> getInActiveMobs() async {
     final url = '$_baseUrl/getinactivemobs';
