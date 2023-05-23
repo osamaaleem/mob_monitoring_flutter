@@ -6,10 +6,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapContainer extends StatefulWidget {
   MapContainer({super.key, this.width = 380,this.height = 280});
-  MapContainer.withCoords({super.key, this.width = 380,this.height = 280, required this.coordinates});
+  MapContainer.withCoords({super.key, this.width = 380,this.height = 280, required this.routeCoords});
   double height;
   double width;
-  List<LatLng>? coordinates;
+  List<LatLng>? routeCoords;
   @override
   _MapContainerState createState() => _MapContainerState();
 }
@@ -22,13 +22,11 @@ class _MapContainerState extends State<MapContainer> {
     LatLng(37.3382, -121.8863),
   ];
   List<LatLng> _routeCoords = [];
-  final Set<Polyline> polyline = {};
-
 
   @override
   void initState() {
     super.initState();
-    _routeCoords.addAll(_points);
+    _routeCoords = widget.routeCoords!;
     _updaterouteCoords();
   }
 

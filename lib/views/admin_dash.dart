@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mob_monitoring_flutter/components/map_display_container.dart';
 import 'package:mob_monitoring_flutter/models/mob.dart';
 import 'package:mob_monitoring_flutter/views/google_map_screen.dart';
 
@@ -167,10 +168,8 @@ class AdminView extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(5.0, 16.0, 5.0, 5.0),
                         child: Column(
                           children: [
-                            Container(
-                              color: Colors.white,
-                              height: 230,
-                              width: double.infinity,
+                            MapContainer(
+
                             ),
                             CustomSizedBox.medium(),
                             ListTile(
