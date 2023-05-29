@@ -7,8 +7,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class MobDemo extends StatefulWidget {
   bool _startDemo = false;
-  MobDemo({Key? key, required this.routeLocations}) : super(key: key);
+  MobDemo({Key? key, required this.routeLocations,required this.mobName}) : super(key: key);
   List<LatLng> routeLocations = [];
+  String mobName;
   @override
   State<MobDemo> createState() => _MobDemoState();
 }
@@ -37,7 +38,7 @@ class _MobDemoState extends State<MobDemo> {
     GoogleMapController? _mapController;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mob Demo'),
+        title: Text('Mob Demo: ${widget.mobName}'),
       ),
       body: SafeArea(
         child: StreamBuilder(

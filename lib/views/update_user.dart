@@ -10,14 +10,15 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../components/custom_drop_down_2.dart';
 
-class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
-
+class UpdateUser extends StatefulWidget {
+  UpdateUser({Key? key, required this.u}) : super(key: key);
+  User u;
   @override
-  State<Register> createState() => _RegisterState();
+  State<UpdateUser> createState() => _UpdateUserState();
 }
 
-class _RegisterState extends State<Register> {
+class _UpdateUserState extends State<UpdateUser> {
+  TextEditingController id = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
@@ -33,9 +34,20 @@ class _RegisterState extends State<Register> {
   bool showSpinner = false;
   @override
   Widget build(BuildContext context) {
+    initState() {
+      super.initState();
+      id.text = widget.u.id.toString();
+      name.text = widget.u.name;
+      email.text = widget.u.email;
+      org.text = widget.u.organization;
+      role.text = widget.u.role;
+      pass.text = widget.u.password;
+      _selectedValue = widget.u.role;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Register User"),
+        title: const Text("UpdateUser User"),
       ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
@@ -105,14 +117,15 @@ class _RegisterState extends State<Register> {
                         ),
                         CustomSizedBox.large(),
                         CustomElevatedButton(
-                            btnText: 'Register',
+                            btnText: 'UpdateUser',
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
                                 setState(() {
                                   showSpinner = true;
                                 });
-                                User user = User.forRegister(
+                                User user = User.all(
+                                    id: int.parse(id.text),
                                     name: name.text,
                                     email: email.text,
                                     password: pass.text,
@@ -131,10 +144,10 @@ class _RegisterState extends State<Register> {
                                 for (TextEditingController t in controllers) {
                                   t.clear();
                                 }
-                                //Response res = await UserNetwork.registerUser(user);
+                                //Response res = await UserNetwork.UpdateUserUser(user);
                                 try {
                                   Response res =
-                                      await UserNetwork.registerUser(user);
+                                      await UserNetwork.UpdateUser(user);
                                   if (res.statusCode == 200 && mounted) {
                                     setState(() {
                                       showSpinner = false;

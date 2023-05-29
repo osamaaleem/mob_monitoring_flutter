@@ -23,6 +23,16 @@ class MobNetwork {
 
   //Future<List<LatLng>> get
 
+  Future<List<Mob>> getMobsWithoutPreDefCoords() async {
+    final url = '$_baseUrl/getmobswithoutpredefcoords';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = json.decode(response.body);
+      return jsonList.map((json) => Mob.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch mobs');
+    }
+  }
   Future<List<Mob>> getInActiveMobs() async {
     final url = '$_baseUrl/getinactivemobs';
     final response = await http.get(Uri.parse(url));
@@ -89,6 +99,44 @@ class MobNetwork {
     } else {
       throw Exception('Failed to fetch mobs');
     }
+  }
+  Future<List<Mob>> getMobByOperatorId(int id){
+    final url = '$_baseUrl/getmobbyoperatorid?opid=$id';
+    return http.get(Uri.parse(url)).then((response) {
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonList = json.decode(response.body);
+        return jsonList.map((json) => Mob.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to fetch mobs');
+      }
+    });
+  }
+  Future<List<Mob>> getMobByOfficerId(int id){
+    final url = '$_baseUrl/getmobbyofficerid?offid=$id';
+    return http.get(Uri.parse(url)).then((response) {
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonList = json.decode(response.body);
+        return jsonList.map((json) => Mob.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to fetch mobs');
+      }
+    });
+  }
+  Future<bool> deleteMob(int id) async {
+    final url = '$_baseUrl/deletemob?id=$id';
+    final res = await http.delete(Uri.parse(url));
+    if(res.statusCode == 200){
+      return true;
+    }
+    return false;
+  }
+  Future<bool> updateMob(Mob m) async{
+    final url = '$_baseUrl/updatemob';
+    final res = await http.post(Uri.parse(url),body: m.toJson());
+    if(res.statusCode == 200){
+      return true;
+    }
+    return false;
   }
   Future<bool> addMob(Mob mob) async {
     final url = '$_baseUrl/addmob';

@@ -1,311 +1,239 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mob_monitoring_flutter/components/custom_sized_box.dart';
-import 'package:mob_monitoring_flutter/components/full_screen_map.dart';
+import 'package:intl/intl.dart';
 import 'package:mob_monitoring_flutter/components/map_display_container.dart';
-import 'package:mob_monitoring_flutter/components/standard_dash_drawer.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:mob_monitoring_flutter/models/mob.dart';
+import 'package:mob_monitoring_flutter/views/google_map_screen.dart';
 
-class StandardUserDash extends StatefulWidget {
-  StandardUserDash({Key? key, required this.email, required this.role})
+import '../components/Standard_dash_drawer.dart';
+import '../components/custom_sized_box.dart';
+import '../models/user.dart';
+import '../networking/mob_network.dart';
+
+class StandardDash extends StatefulWidget {
+  StandardDash({Key? key, required this.u})
       : super(key: key);
-  String email;
-  String role;
+  User u;
   @override
-  State<StandardUserDash> createState() => _StandardUserDashState();
+  State<StandardDash> createState() => _StandardDashState();
 }
 
-class _StandardUserDashState extends State<StandardUserDash> {
-  List<LatLng> _routeCoords = [];
+class _StandardDashState extends State<StandardDash> {
+  //Future<List<Mob>> f = MobNetwork().getMobByOfficerId(widget.u.id!);
+  bool showOnMap = false;
+  String appBarTitle = "Allotted Mobs";
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-        drawer: Drawer(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 80.0),
-            child:
-                StandardDashDrawer(email: widget.email, username: widget.role),
+      drawer: Drawer(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 80.0),
+          child: StandardDashDrawer(
+            username: widget.u.name,
+            email: widget.u.email,
           ),
         ),
-        appBar: AppBar(
-          title: const Text("Mob Monitoring"),
-        ),
-        body: SafeArea(
-            child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                    16, 40, MediaQuery.of(context).size.width * 0.04, 16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+      appBar: AppBar(
+        title: Text(appBarTitle),
+        // actions: [
+        //   PopupMenuButton<Text>(
+        //     itemBuilder: (context) {
+        //       return [
+        //         PopupMenuItem(
+        //           child: const Text("View On Map"),
+        //           onTap: () {
+        //             setState(() {
+        //               appBarTitle = "Active Mobs on Map";
+        //               showOnMap = true;
+        //             });
+        //           },
+        //         ),
+        //         PopupMenuItem(
+        //           child: const Text("Show All Mobs"),
+        //           onTap: () {
+        //             setState(() {
+        //               showOnMap = false;
+        //               appBarTitle = "All Mobs";
+        //               f = MobNetwork().getAllMobs();
+        //             });
+        //           },
+        //         ),
+        //         PopupMenuItem(
+        //           child: const Text("Show All Active Mobs"),
+        //           onTap: () {
+        //             setState(() {
+        //               showOnMap = false;
+        //               appBarTitle = "Active Mobs";
+        //               f = MobNetwork().getActiveMobs();
+        //             });
+        //           },
+        //         ),
+        //         PopupMenuItem(
+        //           child: const Text("Show Inactive Mobs"),
+        //           onTap: () {
+        //             setState(() {
+        //               showOnMap = false;
+        //               appBarTitle = "Inactive Mobs";
+        //               f = MobNetwork().getInActiveMobs();
+        //             });
+        //           },
+        //         ),
+        //         PopupMenuItem(
+        //           child: const Text("Show Mobs without Supervisors"),
+        //           onTap: () {
+        //             setState(() {
+        //               showOnMap = false;
+        //               appBarTitle = "Mobs without Supervisors";
+        //               f = MobNetwork().getAllUnassignedUserMobs();
+        //             });
+        //           },
+        //         ),
+        //         PopupMenuItem(
+        //           child: const Text("Show Mobs with Supervisors"),
+        //           onTap: () {
+        //             setState(() {
+        //               showOnMap = false;
+        //               appBarTitle = "Mobs with Supervisors";
+        //               f = MobNetwork().getAllUserAssignedMobs();
+        //             });
+        //           },
+        //         ),
+        //         PopupMenuItem(
+        //           child: const Text("Show Mobs without Drones"),
+        //           onTap: () {
+        //             setState(() {
+        //               showOnMap = false;
+        //               appBarTitle = "Mobs without Drones";
+        //               f = MobNetwork().getAllMobsWithDroneAssigned();
+        //             });
+        //           },
+        //         ),
+        //         PopupMenuItem(
+        //           child: const Text("Show Mobs with Drones"),
+        //           onTap: () {
+        //             setState(() {
+        //               showOnMap = false;
+        //               appBarTitle = "Mobs with Drones";
+        //               f = MobNetwork().getAllMobsWithoutDroneAssigned();
+        //             });
+        //           },
+        //         )
+        //       ];
+        //     },
+        //   )
+        // ],
+      ),
+      body: StandardView(id: widget.u.id!,),
+    );
+  }
+}
+
+class StandardView extends StatelessWidget {
+  const StandardView({
+    super.key,
+    required this.id,
+  });
+
+  final int id;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8.0, 25.0, 8.0, 15.0),
+      child: FutureBuilder(
+        future:  MobNetwork().getMobByOfficerId(id).timeout(const Duration(seconds: 5)),
+        builder: (ctx, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'API Unreachable',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            );
+          }
+          if (snapshot.hasData) {
+            List<Mob>? m = snapshot.data;
+            return ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: m!.length,
+              itemBuilder: (BuildContext context, int index) {
+                String dateString = m[index].startDate!;
+                DateTime mobDate = DateTime.parse(dateString);
+                return Column(
                   children: [
-                    Text(
-                      'Dashboard',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                      child: Text(
-                        'Mob Name.',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: Stack(
-                        children: [
-                          //MapContainer(),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).cardTheme.color,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            height: 280,
-                            width: 380,
-                            child:  Center(
-                              child: MapContainer(),
-                            ),
-                          ),
-                          Positioned(
-                            top: 8,
-                            left: 8,
-                            child: FilledButton.tonalIcon(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const FullScreenMap()));
-                              },
-                              icon: const Icon(
-                                Icons.fullscreen_rounded,
-                                size: 30,
-                              ),
-                              label: const Text('View Full Screen'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Container(
-                        height: 280.0,
-                        width: 380.0,
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            const Expanded(
-                              child: CircleAvatar(
-                                radius: 100,
-                                backgroundImage: AssetImage('assets/crowd.png'),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Wrap(
-                              direction: Axis.vertical,
-                              alignment: WrapAlignment.center,
-                              runAlignment: WrapAlignment.start,
-                              //mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Mob Name',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge
-                                      ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondaryContainer),
-                                ),
-                                CustomSizedBox.small(),
-                                Text(
-                                  'Mob Strength',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondaryContainer),
-                                ),
-                                CustomSizedBox.small(),
-                                Text(
-                                  'Start Date',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondaryContainer),
-                                ),
-                                CustomSizedBox.small(),
-                                Text(
-                                  'Drone Operator',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondaryContainer),
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Container(
-                        height: 280.0,
-                        width: 380.0,
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    Card(
+                      elevation: 1,
+                      clipBehavior: Clip.antiAlias,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(5.0, 16.0, 5.0, 5.0),
                         child: Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // MapContainer(
+                            //
+                            // ),
+
+                            CustomSizedBox.medium(),
+                            ListTile(
+                              title: Text(m[index].name!),
+                              leading: const CircleAvatar(
+                                backgroundImage: AssetImage('assets/crowd.png'),
+                              ),
+                              subtitle: Text(
+                                  "\nStart Date: ${DateFormat.yMd().format(mobDate).toString()}\nActual Strength: ${m[index].actualStrength}"),
+                              trailing: const Icon(Icons.people),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    16.0, 16.0, 16.0, 0.0),
+                                child: m[index].isActive!
+                                    ? const Text(
+                                  "Active",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green),
+                                )
+                                    : const Text(
+                                  "Inactive",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                )),
+                            ButtonBar(
+                              alignment: MainAxisAlignment.start,
                               children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Drone Name',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge
-                                          ?.copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSecondaryContainer),
-                                    ),
-                                    CustomSizedBox.small(),
-                                    Text(
-                                      'Drone Operator',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSecondaryContainer),
-                                    ),
-                                  ],
+                                TextButton(
+                                  child: const Text("View Detail"),
+                                  onPressed: () {
+                                  },
                                 ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 10, 0, 0),
-                                  child: CircularPercentIndicator(
-                                    header: Text(
-                                      'Time Remaining\n',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    //fillColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                                    progressColor:
-                                        Theme.of(context).colorScheme.secondary,
-                                    //backgroundColor: Theme.of(context).colorScheme.secondary,
-                                    percent: 0.93,
-                                    radius: 50,
-                                    lineWidth: 10,
-                                    animation: true,
-                                    center: Text(
-                                      '45 Min\'s',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                  ),
+                                TextButton(
+                                  child: const Text("Edit"),
+                                  onPressed: () {},
                                 )
                               ],
-                            ),
-                            CustomSizedBox.large(),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5, right: 5),
-                              child: LinearPercentIndicator(
-                                leading: Icon(
-                                  Icons.battery_6_bar_sharp,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
-                                lineHeight: 25,
-                                progressColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                percent: 0.70,
-                                animation: true,
-                                center: Text('60%',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondaryContainer)),
-                              ),
-                            ),
-                            CustomSizedBox.large(),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5, right: 5),
-                              child: LinearPercentIndicator(
-                                leading: Icon(Icons.sd_storage,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .secondary),
-                                lineHeight: 25,
-                                progressColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                percent: 0.70,
-                                animation: true,
-                                center: Text('50 MB',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondaryContainer)),
-                              ),
                             ),
                           ],
                         ),
                       ),
+                    ),
+                    const Divider(
+                      color: Colors.grey,
+                      height: 20.0,
+                      thickness: 1,
+                      indent: 20,
+                      endIndent: 20,
                     )
                   ],
-                ),
-              ),
-            ],
-          ),
-        )));
+                );
+              },
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
+    );
   }
 }

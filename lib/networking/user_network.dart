@@ -25,8 +25,7 @@ class UserNetwork{
     final List<dynamic> jsonList = json.decode(response.body);
     return jsonList.map((json) => User.fromJson(json)).toList();
 
-  }
-  static Future<http.Response> login(String email,String password) async {
+  }static Future<http.Response> login(String email,String password) async {
     String url = "https://${IPAddress.getIP()}/api/users/login";
     var uri = Uri.parse(url);
     if(kDebugMode){
@@ -42,5 +41,24 @@ class UserNetwork{
       print("Response Body: ${res.body}");
     }
     return res;
+  }
+  static Future<http.Response> UpdateUser(User user) async {
+    String url = "https://${IPAddress.getIP()}/api/users/updateuser";
+    var uri = Uri.parse(url);
+    if(kDebugMode){
+      print(uri);
+    }
+    var res = await http.post(uri,
+        body: user.toJson()
+    );
+    return res;
+  }
+  static Future<http.Response> DeleteUser(int userId){
+    String url = "https://${IPAddress.getIP()}/api/users/deleteuser?id=$userId";
+    var uri = Uri.parse(url);
+    if(kDebugMode){
+      print(uri);
+    }
+    return http.get(uri);
   }
 }

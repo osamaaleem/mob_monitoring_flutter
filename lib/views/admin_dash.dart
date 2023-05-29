@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mob_monitoring_flutter/components/map_display_container.dart';
 import 'package:mob_monitoring_flutter/models/mob.dart';
+import 'package:mob_monitoring_flutter/views/edit_mob.dart';
 import 'package:mob_monitoring_flutter/views/google_map_screen.dart';
 
 import '../components/admin_dash_drawer.dart';
 import '../components/custom_sized_box.dart';
+import '../models/user.dart';
 import '../networking/mob_network.dart';
 
 class AdminDash extends StatefulWidget {
-  AdminDash({Key? key, required this.username, required this.email})
+  AdminDash({Key? key, required this.u})
       : super(key: key);
-  String username;
-  String email;
+  User u;
   @override
   State<AdminDash> createState() => _AdminDashState();
 }
@@ -28,8 +29,8 @@ class _AdminDashState extends State<AdminDash> {
         child: Padding(
           padding: const EdgeInsets.only(top: 80.0),
           child: AdminDashDrawer(
-            username: widget.username,
-            email: widget.email,
+            username: widget.u.name,
+            email: widget.u.email,
           ),
         ),
       ),
@@ -168,9 +169,9 @@ class AdminView extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(5.0, 16.0, 5.0, 5.0),
                         child: Column(
                           children: [
-                            MapContainer(
-
-                            ),
+                            // MapContainer(
+                            //
+                            // ),
                             CustomSizedBox.medium(),
                             ListTile(
                               title: Text(m[index].name!),
@@ -206,8 +207,21 @@ class AdminView extends StatelessWidget {
                                 ),
                                 TextButton(
                                   child: const Text("Edit"),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditMob(
+                                          m: m[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text("Delete"),
                                   onPressed: () {},
-                                )
+                                ),
                               ],
                             ),
                           ],

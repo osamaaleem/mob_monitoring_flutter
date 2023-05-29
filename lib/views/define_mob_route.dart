@@ -3,18 +3,22 @@ import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mob_monitoring_flutter/components/google_map_polyline.dart';
+import 'package:mob_monitoring_flutter/models/mob_coords.dart';
+import 'package:mob_monitoring_flutter/networking/coordinate_network.dart';
+import 'package:mob_monitoring_flutter/networking/mob_network.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import 'mob_demo.dart';
 
-class MapRouteSelector extends StatefulWidget {
-  MapRouteSelector({super.key,required this.name});
+class DefineMobRoute extends StatefulWidget {
+  DefineMobRoute({super.key, required this.id, required this.name});
+  int id;
   String name;
   @override
-  _MapRouteSelectorState createState() => _MapRouteSelectorState();
+  _DefineMobRouteState createState() => _DefineMobRouteState();
 }
 
-class _MapRouteSelectorState extends State<MapRouteSelector> {
+class _DefineMobRouteState extends State<DefineMobRoute> {
   GoogleMapController? _mapController;
   late List<LatLng> _routeCoords = [];
   late List<Marker> _markers = [];
@@ -29,7 +33,7 @@ class _MapRouteSelectorState extends State<MapRouteSelector> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Select Mob Route'),
+          title: Text('Select ${widget.name} route'),
         ),
         body: SafeArea(
           child: ModalProgressHUD(
@@ -98,7 +102,7 @@ class _MapRouteSelectorState extends State<MapRouteSelector> {
                             });
                           },
                           label: _isSaveButton
-                              ? const Text('Demonstrate')
+                              ? const Text('Save Route')
                               : const Text('Select Route'),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -179,15 +183,18 @@ class _MapRouteSelectorState extends State<MapRouteSelector> {
       if (kDebugMode) {
         print(_routeCoords);
       }
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MobDemo(
-            mobName: widget.name,
-            routeLocations: _routeCoords,
+      await CoordinateNetwork.addMobCoords(_routeCoords,widget.id);
+      if(mounted){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MobDemo(
+              routeLocations: _routeCoords,
+              mobName: widget.name,
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
 

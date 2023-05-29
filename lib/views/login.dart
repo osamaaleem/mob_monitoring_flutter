@@ -10,6 +10,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../components/custom_elevated_button.dart';
 import '../components/custom_sized_box.dart';
 import '../components/custom_form_field.dart';
+import '../models/user.dart';
 import '../networking/user_network.dart';
 
 class Login extends StatefulWidget {
@@ -97,28 +98,25 @@ class _LoginState extends State<Login> {
                                     nameCtr.text, passCtr.text);
                                 if (res.statusCode == 200 && mounted) {
                                   var resBody = jsonDecode(res.body);
-                                  String role = resBody["message"].toString();
+                                  //String role = resBody["message"].toString();
+                                  User u = User.fromJson(resBody);
                                   if (kDebugMode) {
-                                    print("User Role: $role");
+                                    print("User Role: ${u.role}");
                                   }
                                   String name = nameCtr.text;
                                   nameCtr.clear();
                                   passCtr.clear();
-                                  if(role == 'Standard'){
+                                  if(u.role == 'Standard'){
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => StandardUserDash(
-                                                email: name,
-                                                role: role)));
+                                            builder: (context) => StandardDash(u: u)));
                                   }
                                   else{
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => AdminDash(
-                                                email: name,
-                                                username: role),settings: const RouteSettings(name: '/AdminDash')));
+                                            builder: (context) => AdminDash(u: u,),settings: const RouteSettings(name: '/AdminDash')));
                                   }
 
                                 } else {

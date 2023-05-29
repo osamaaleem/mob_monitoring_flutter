@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mob_monitoring_flutter/views/add_dev.dart';
 import 'package:mob_monitoring_flutter/views/add_redzone.dart';
+import 'package:mob_monitoring_flutter/views/mob_list.dart';
 
 import 'package:mob_monitoring_flutter/views/view_drones.dart';
 
@@ -78,7 +79,21 @@ class AdminDashDrawer extends StatelessWidget {
                 // Navigator.push(context,
                 //     MaterialPageRoute(builder: (context) => const ManageMob()));
               },
-            )
+            ),
+            ListTile(
+              title: const Text("Define Coordinates"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MobList(demonstrate: false,)));
+              },
+            ),
+            ListTile(
+              title: const Text("Demonstrate Mob"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MobList(demonstrate: true,)));
+              },
+            ),
           ],
         ),
         ExpansionTile(
@@ -96,7 +111,6 @@ class AdminDashDrawer extends StatelessWidget {
             ),
             ListTile(
               title: const Text("Add Redzone"),
-              //TODO: Add Redzone Page
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const AddRedzone()));
