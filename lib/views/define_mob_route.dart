@@ -11,9 +11,10 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'mob_demo.dart';
 
 class DefineMobRoute extends StatefulWidget {
-  DefineMobRoute({super.key, required this.id, required this.name});
+  DefineMobRoute({super.key, required this.id, required this.name, required this.demonstrate});
   int id;
   String name;
+  bool demonstrate;
   @override
   _DefineMobRouteState createState() => _DefineMobRouteState();
 }
@@ -183,18 +184,39 @@ class _DefineMobRouteState extends State<DefineMobRoute> {
       if (kDebugMode) {
         print(_routeCoords);
       }
-      await CoordinateNetwork.addMobCoords(_routeCoords,widget.id);
-      if(mounted){
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MobDemo(
-              routeLocations: _routeCoords,
-              mobName: widget.name,
+      if(widget.demonstrate){
+        await CoordinateNetwork.addMobCoords(_routeCoords,widget.id);
+        if(mounted){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MobDemo(
+                routeLocations: _routeCoords,
+                mobName: widget.name,
+              ),
             ),
-          ),
-        );
+          );
+        }
+        return;
       }
+      else{
+        await CoordinateNetwork.addMobCoords(_routeCoords,widget.id);
+        if(mounted){
+          Navigator.popUntil(context, (route) => route.settings.name == '/AdminDash');
+        }
+      }
+      //
+      // if(mounted){
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => MobDemo(
+      //         routeLocations: _routeCoords,
+      //         mobName: widget.name,
+      //       ),
+      //     ),
+      //   );
+      // }
     }
   }
 

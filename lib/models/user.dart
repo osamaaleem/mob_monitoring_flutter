@@ -16,12 +16,12 @@ class User{
   };
   factory User.fromJson(Map<String, dynamic> json) {
     return User.all(
-      id: int.parse(json['id'].toString()),
-      name: json['name'].toString(),
-      email: json['email'].toString(),
-      password: json['password'].toString(),
-      organization: json['organization'].toString(),
-      role: json['role'].toString(),
+      id: int.parse(json['UserID'].toString()),
+      name: json['Name'].toString(),
+      email: json['Email'].toString(),
+      password: json['Password'].toString(),
+      organization: json['Organization'].toString(),
+      role: json['Role'].toString(),
     );
   }
 

@@ -4,7 +4,6 @@ import 'package:mob_monitoring_flutter/models/mob_coords.dart';
 import 'package:mob_monitoring_flutter/networking/coordinate_network.dart';
 import 'package:mob_monitoring_flutter/views/define_mob_route.dart';
 import 'mob_demo.dart';
-import 'view_drones.dart';
 
 class MobDemoNavigator extends StatefulWidget {
   MobDemoNavigator(
@@ -51,46 +50,39 @@ class _MobDemoNavigatorState extends State<MobDemoNavigator> {
                 builder: (context) => MobDemo(
                     mobName: widget.mobName, routeLocations: _preDefCoords)));
       }
+    } else {
+      if (context.mounted) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DefineMobRoute(
+                      id: widget.id,
+                      name: widget.mobName,
+                      demonstrate: widget.demonstrate,
+                    )));
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Looking For Coordinates..."),
-      ),
-      // body: FutureBuilder(
-      //   future: _getPreDefCoords(widget.id),
-      //   builder: (ctx,snapshot){
-      //     if(snapshot.hasData){
-      //       bool coordsAreAvaialable = snapshot.data!;
-      //       if(coordsAreAvaialable){
-      //         //return Navigator.push(context, MaterialPageRoute(builder: (context) => ViewDrones()))));
-      //         if(widget.demonstrate){
-      //           Navigator.of(context)
-      //               .popUntil((route) => route.settings.name == '/AdminDash');
-      //         }
-      //         else{
-      //           return MobDemo(mobName: widget.mobName, routeLocations: _preDefCoords);
-      //         }
-      //
-      //       }
-      //       else if(!_coordAvailable){
-      //         return DefineMobRoute(id: widget.id, name: widget.mobName);
-      //       }
-      //       else{
-      //         return const Center(
-      //           child: CircularProgressIndicator(),
-      //         );
-      //       }
-      //     }
-      //     else{
-      //       return const Center(
-      //         child: CircularProgressIndicator(),
-      //     ); }
-      //   },
-      // ),
-    );
+        appBar: AppBar(
+          title: const Text("Looking For Coordinates..."),
+        ),
+        body: FutureBuilder(
+          future: navigator(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ));
   }
 }
