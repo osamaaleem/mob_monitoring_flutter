@@ -309,3 +309,56 @@
 //             )));
 //   }
 // }
+
+
+
+
+// FutureBuilder(
+// future: _determinePosition(),
+// builder: (ctx,snapshot){
+// if(snapshot.hasData){
+// Position p = snapshot.data as Position;
+// LatLng cp = LatLng(p.latitude, p.longitude);
+// return Column(
+// children: [
+// Container(),
+// CustomSizedBox.medium(),
+// //Google Map in container here to select Markers and save to list
+// GoogleMap(
+// initialCameraPosition: CameraPosition(
+// target: cp,
+// zoom: 15,
+// ),
+// polylines: {
+// Polyline(
+// polylineId: const PolylineId("Mob Path"),
+// points: _polygonPoints,
+// color: Colors.red,
+// width: 5,
+// )
+// },
+// markers: {
+// Marker(
+// markerId: const MarkerId("Current Location"),
+// position: _polygonPoints.isEmpty?cp:_polygonPoints.last,
+// )
+// },
+// onTap: (LatLng latLng) {
+// setState(() {
+// _polygonPoints.add(latLng);
+// });
+// MobCoordinates m = MobCoordinates(
+// coordinateID: null,
+// MobID_FK: widget.u.id,
+// MobLat: latLng.latitude,
+// MobLon: latLng.longitude,
+// );
+// }),
+// ],
+// );
+// }
+// else{
+// return const Center(child: CircularProgressIndicator());
+// }
+// },
+// )

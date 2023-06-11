@@ -6,15 +6,15 @@ import 'package:mob_monitoring_flutter/models/redzone_coordinates.dart';
 import 'package:mob_monitoring_flutter/networking/coordinate_network.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class RedZoneSelectorMap extends StatefulWidget {
-  RedZoneSelectorMap({super.key, required this.redZoneId});
-  int redZoneId = 1;
-
+class RedzoneUpdateMap extends StatefulWidget {
+  RedzoneUpdateMap({super.key, required this.redZoneId, required this.redZoneCoordinates});
+  int redZoneId;
+  List<RedZoneCoordinates> redZoneCoordinates = [];
   @override
-  _RedZoneSelectorMapState createState() => _RedZoneSelectorMapState();
+  _RedzoneUpdateMapState createState() => _RedzoneUpdateMapState();
 }
 
-class _RedZoneSelectorMapState extends State<RedZoneSelectorMap> {
+class _RedzoneUpdateMapState extends State<RedzoneUpdateMap> {
   GoogleMapController? _mapController;
   late List<Marker> _markers = [];
   late List<LatLng> _selectedMarkers = [];
@@ -24,6 +24,21 @@ class _RedZoneSelectorMapState extends State<RedZoneSelectorMap> {
   bool _isAsyncCall = false;
   LatLng _initialPosition = const LatLng(40.7128, -74.0060);
   List<LatLng> _initialPolygon = [];
+  void _clearSelectedMarkers() {
+    setState(() {
+      _markers.clear();
+      _selectedMarkers.clear();
+      _polygonPoints.clear();
+      _isPolygonClosed = false;
+      _isSaveButton = false;
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    _polygonPoints = widget.redZoneCoordinates.map((e) => LatLng(e.redZoneLat!, e.redZoneLon!)).toList();
+    _isPolygonClosed = true;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,17 +89,28 @@ class _RedZoneSelectorMapState extends State<RedZoneSelectorMap> {
                         top: 10,
                         left: 10,
                         child: FloatingActionButton.extended(
-                      icon: _isSaveButton
-                          ? const Icon(Icons.save)
-                          : const Icon(Icons.add),
-                      onPressed: _selectMarkersAndReturn,
-                      label: _isSaveButton
-                          ? const Text('Save')
-                          : const Text('Select Markers'),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    )),
+                          icon: _isSaveButton
+                              ? const Icon(Icons.save)
+                              : const Icon(Icons.add),
+                          onPressed: _selectMarkersAndReturn,
+                          label: _isSaveButton
+                              ? const Text('Save')
+                              : const Text('Select Markers'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        )),
+                    Positioned(
+                        top: 10,
+                        right: 10,
+                        child: FloatingActionButton.extended(
+                          icon: const Icon(Icons.clear),
+                          onPressed: _clearSelectedMarkers,
+                          label:const Text('Clear'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        )),
                   ]);
                 }
                 return const Center(

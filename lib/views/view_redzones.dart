@@ -1,45 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:mob_monitoring_flutter/components/custom_sized_box.dart';
+import 'package:mob_monitoring_flutter/models/redzone.dart';
 import 'package:mob_monitoring_flutter/networking/drone_network.dart';
-import 'package:mob_monitoring_flutter/views/update_drone.dart';
+import 'package:mob_monitoring_flutter/networking/redzone_network.dart';
+import 'package:mob_monitoring_flutter/networking/user_network.dart';
+import 'package:mob_monitoring_flutter/views/update_redzone.dart';
+import 'package:mob_monitoring_flutter/views/update_user.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../models/drone.dart';
+import '../models/user.dart';
 
-class ViewDrones extends StatefulWidget {
-  const ViewDrones({Key? key}) : super(key: key);
+class ViewRedzones extends StatefulWidget {
+  ViewRedzones({Key? key}) : super(key: key);
 
   @override
-  State<ViewDrones> createState() => _ViewDronesState();
+  State<ViewRedzones> createState() => _ViewRedzonesState();
 }
 
-class _ViewDronesState extends State<ViewDrones> {
-  final SnackBar snackBar = const SnackBar(content: Text('Drone Deleted'));
-  final SnackBar errSnackBar = const SnackBar(content: Text('Error Deleting Drone'));
+class _ViewRedzonesState extends State<ViewRedzones> {
+  final SnackBar snackBar = const SnackBar(content: Text('Redzone Deleted'));
+  final SnackBar errSnackBar = const SnackBar(content: Text('Error Deleting Redzone'));
   bool _isAsyncCall = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Drones'),
+        title: const Text('View Redzones'),
       ),
       body: ModalProgressHUD(
         inAsyncCall: _isAsyncCall,
         child: FutureBuilder(
           future:
-              DroneNetwork().fetchDrones().timeout(const Duration(seconds: 60)),
+          RedzoneNetwork().getAllZones().timeout(const Duration(seconds: 5)),
           builder: (ctx, snapshot) {
             if (snapshot.hasData) {
-              List<Drone> l = snapshot.data!;
+              List<Redzone> l = snapshot.data!;
               return ListView.builder(
                   itemCount: l.length,
                   itemBuilder: (ctx, index) {
                     return Column(
                       children: [
                         ListTile(
-                          leading: const Icon(Icons.device_hub),
+                          leading: const Icon(Icons.person),
                           title: Text(l[index].name),
-                          subtitle: Text("${l[index].isAvailable? 'Available': 'Not Available'}\n${l[index].isCharged?'Charged':'Not Charged'}"),
+                          subtitle: Text(l[index].isActive? 'Active' : 'Inactive',style: TextStyle(color: l[index].isActive? Colors.green:Colors.red),),
                           trailing: PopupMenuButton(
                             itemBuilder: (context) => [
                               PopupMenuItem(
@@ -49,7 +56,7 @@ class _ViewDronesState extends State<ViewDrones> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              UpdateDrone(d: l[index])));
+                                              UpdateRedzone(r: l[index])));
                                 },
                               ),
                               PopupMenuItem(
@@ -59,8 +66,8 @@ class _ViewDronesState extends State<ViewDrones> {
                                     _isAsyncCall = true;
                                   });
                                   var response =
-                                  await DroneNetwork().DeleteDrone(l[index].droneId!);
-                                  if (response.statusCode == 200) {
+                                  await RedzoneNetwork().deleteRedzone(l[index].id!);
+                                  if (response) {
                                     setState(() {
                                       _isAsyncCall = false;
                                     });

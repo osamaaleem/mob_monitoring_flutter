@@ -30,6 +30,32 @@ class DroneNetwork {
     }
     return drones;
   }
+ Future<http.Response> UpdateDrone(Drone d) async {
+    final url = '$apiUrl/UpdateDrone';
+    final response = await http.post(Uri.parse(url),body: d.toJson());
+    if(response.statusCode == 200){
+      return response;
+    }
+    if(response.statusCode == HttpStatus.internalServerError){
+      if(kDebugMode){
+        print(HttpStatus.internalServerError);
+      }
+    }
+    return response;
+  }
+ Future<http.Response> DeleteDrone(int droneId) async {
+    final url = '$apiUrl/DeleteDrone?id=$droneId';
+    final response = await http.delete(Uri.parse(url));
+    if(response.statusCode == 200){
+      return response;
+    }
+    if(response.statusCode == HttpStatus.internalServerError){
+      if(kDebugMode){
+        print(HttpStatus.internalServerError);
+      }
+    }
+    return response;
+  }
 
   Future<bool> addDrone(Drone drone) async {
     final url = '$apiUrl/addDrone';

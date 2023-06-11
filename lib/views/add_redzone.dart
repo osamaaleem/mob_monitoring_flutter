@@ -93,11 +93,6 @@ class _AddRedzoneState extends State<AddRedzone> {
                                       print(e);
                                     }
                                   }
-                                  catch(e){
-                                    if(kDebugMode){
-                                      print(e);
-                                    }
-                                  }
                                 }
                                 setState(() {
                                   showSpinner = false;
@@ -112,12 +107,12 @@ class _AddRedzoneState extends State<AddRedzone> {
                                       context: context,
                                       builder: (context) =>
                                           const RedzoneDialogue()))!;
-                                  if (addCoords && context.mounted && id != null) {
+                                  if (addCoords && context.mounted) {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                RedZoneSelectorMap(redZoneId: id!,))
+                                                RedZoneSelectorMap(redZoneId: 2,))
                                     );
                                   }
                                   else{

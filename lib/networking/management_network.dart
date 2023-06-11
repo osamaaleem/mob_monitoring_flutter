@@ -19,20 +19,22 @@ class ManagementNetwork{
   }
   // Post mobID and userID to assign user to mob
   static Future<bool> allocateMobToOperator(int mobId, int userId) async {
-    String url = "https://${IPAddress.getIP()}/api/management/allocatemobtooperator";
-    var response = await http.post(Uri.parse(url), body: {
-      "mobId": mobId.toString(),
-      "userId": userId.toString()
-    });
+    String url = "https://${IPAddress.getIP()}/api/Management/AllocateMobToOperator?userId=$userId&mobId=$mobId";
+    // var response = await http.post(Uri.parse(url), body: {
+    //   "mobId": mobId.toString(),
+    //   "userId": userId.toString()
+    // });
+    var response = await http.get(Uri.parse(url));
     return response.statusCode == 200? true:false;
   }
 
   static Future<bool> allocateMobToOfficer(int mobId, int userId) async {
-    String url = "https://${IPAddress.getIP()}/api/management/allocatemobtoofficer";
-    var response = await http.post(Uri.parse(url), body: {
-      "mobId": mobId.toString(),
-      "userId": userId.toString()
-    });
+    String url = "https://${IPAddress.getIP()}/api/Management/AllocateMobToOfficer?userId=$userId&mobId=$mobId";
+    // var response = await http.post(Uri.parse(url), body: {
+    //   "mobId": mobId.toString(),
+    //   "userId": userId.toString()
+    // });
+    var response = await http.get(Uri.parse(url));
     return response.statusCode == 200? true:false;
   }
 }

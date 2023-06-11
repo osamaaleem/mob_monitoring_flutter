@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mob_monitoring_flutter/views/add_dev.dart';
 import 'package:mob_monitoring_flutter/views/add_redzone.dart';
+import 'package:mob_monitoring_flutter/views/allocate_officer_mob.dart';
+import 'package:mob_monitoring_flutter/views/allocate_operators_mob.dart';
 import 'package:mob_monitoring_flutter/views/mob_list.dart';
 
 import 'package:mob_monitoring_flutter/views/view_drones.dart';
+import 'package:mob_monitoring_flutter/views/view_redzones.dart';
+import 'package:mob_monitoring_flutter/views/view_users.dart';
 
 import '../views/add_mob.dart';
 import '../views/register.dart';
@@ -60,7 +64,14 @@ class AdminDashDrawer extends StatelessWidget {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Register()));
                 },
-              )
+              ),
+              ListTile(
+                title: const Text("View User"),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ViewUsers()));
+                },
+              ),
             ],
           ),
           ExpansionTile(
@@ -76,10 +87,24 @@ class AdminDashDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: const Text("Manage Mob"),
+                title: const Text("Allocate Officer"),
                 onTap: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => const ManageMob()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const AllocateMobOfficer()));
+                },
+              ),
+              ListTile(
+                title: const Text("Allocate Operator"),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const AllocateMobOperator()));
+                },
+              ),
+              ListTile(
+                title: const Text("Add Mob"),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const AddMob()));
                 },
               ),
               ListTile(
@@ -106,9 +131,8 @@ class AdminDashDrawer extends StatelessWidget {
               ListTile(
                 title: const Text("View Redzones"),
                 onTap: () {
-                  //TODO: Add Redzone View
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => const AddMob()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ViewRedzones()));
                 },
               ),
               ListTile(
@@ -130,6 +154,14 @@ class AdminDashDrawer extends StatelessWidget {
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const AddDrone()));
+                },
+              ),
+              ListTile(
+                title: const Text("Allocate Officer"),
+                onTap: () {
+                  //TODO: Add allocation screen
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const AddMob()));
                 },
               ),
               ListTile(

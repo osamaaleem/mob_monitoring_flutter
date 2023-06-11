@@ -20,11 +20,20 @@ class MobNetwork {
       throw Exception('Failed to fetch mobs');
     }
   }
-
+  Future<Mob> getMobByOperatorId(int id) async {
+    final url = '$_baseUrl/getmobbyoperatorid?opId=$id';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final dynamic jsonList = json.decode(response.body);
+      return Mob.fromJson(jsonList);
+    } else {
+      throw Exception('Failed to fetch mobs');
+    }
+  }
   //Future<List<LatLng>> get
 
   Future<List<Mob>> getMobsWithoutPreDefCoords() async {
-    final url = '$_baseUrl/getmobswithoutpredefcoords';
+    final url = '$_baseUrl/GetMobsWithoutPredefCoords';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
@@ -100,17 +109,17 @@ class MobNetwork {
       throw Exception('Failed to fetch mobs');
     }
   }
-  Future<List<Mob>> getMobByOperatorId(int id){
-    final url = '$_baseUrl/getmobbyoperatorid?opid=$id';
-    return http.get(Uri.parse(url)).then((response) {
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonList = json.decode(response.body);
-        return jsonList.map((json) => Mob.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to fetch mobs');
-      }
-    });
-  }
+  // Future<List<Mob>> getMobByOperatorId(int id){
+  //   final url = '$_baseUrl/getmobbyoperatorid?opid=$id';
+  //   return http.get(Uri.parse(url)).then((response) {
+  //     if (response.statusCode == 200) {
+  //       final List<dynamic> jsonList = json.decode(response.body);
+  //       return jsonList.map((json) => Mob.fromJson(json)).toList();
+  //     } else {
+  //       throw Exception('Failed to fetch mobs');
+  //     }
+  //   });
+  // }
   Future<List<Mob>> getMobByOfficerId(int id){
     final url = '$_baseUrl/getmobbyofficerid?offid=$id';
     return http.get(Uri.parse(url)).then((response) {
@@ -124,7 +133,7 @@ class MobNetwork {
   }
   Future<bool> deleteMob(int id) async {
     final url = '$_baseUrl/deletemob?id=$id';
-    final res = await http.delete(Uri.parse(url));
+    final res = await http.get(Uri.parse(url));
     if(res.statusCode == 200){
       return true;
     }
@@ -145,5 +154,25 @@ class MobNetwork {
       return true;
     }
     return false;
+  }
+  Future<List<Mob>> getMobsWithoutOfficers() async {
+    final url = '$_baseUrl/GetMobsWithoutOfficers';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = json.decode(response.body);
+      return jsonList.map((json) => Mob.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch mobs');
+    }
+  }
+  Future<List<Mob>> getMobsWithoutOperators() async {
+    final url = '$_baseUrl/GetMobsWithoutOperators';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = json.decode(response.body);
+      return jsonList.map((json) => Mob.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch mobs');
+    }
   }
 }

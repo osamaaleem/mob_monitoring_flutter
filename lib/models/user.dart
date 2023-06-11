@@ -5,7 +5,7 @@ class User{
   String password;
   String organization;
   String role;
-  User.all({required this.name,required this.email,required this.password,required this.organization,required this.role, required int id});
+  User.all({required this.name,required this.email,required this.password,required this.organization,required this.role, required this.id});
   User.forRegister({required this.name,required this.email,required this.password,required this.organization,required this.role});
   Map toJson() => {
     'name': name,

@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -23,7 +21,15 @@ class UserNetwork{
     String url = "https://${IPAddress.getIP()}/api/users/getallusers";
     var response = await http.get(Uri.parse(url));
     final List<dynamic> jsonList = json.decode(response.body);
-    return jsonList.map((json) => User.fromJson(json)).toList();
+    //return json.decode(response.body);
+    List<User> l = [];
+    for(var i in jsonList){
+       User u = User.fromJson(i);
+       l.add(u);
+      //l.add(u)
+    }
+    return l;
+    //return jsonList.map((json) => User.fromJson(json)).toList();
 
   }static Future<http.Response> login(String email,String password) async {
     String url = "https://${IPAddress.getIP()}/api/users/login";

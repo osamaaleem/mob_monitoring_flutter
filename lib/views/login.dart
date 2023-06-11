@@ -12,6 +12,7 @@ import '../components/custom_sized_box.dart';
 import '../components/custom_form_field.dart';
 import '../models/user.dart';
 import '../networking/user_network.dart';
+import 'operator_view.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -112,11 +113,14 @@ class _LoginState extends State<Login> {
                                         MaterialPageRoute(
                                             builder: (context) => StandardDash(u: u)));
                                   }
-                                  else{
+                                  else if(u.role == 'Admin'){
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => AdminDash(u: u,),settings: const RouteSettings(name: '/AdminDash')));
+                                  }
+                                  else{
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => OperatorView(u: u,),settings: const RouteSettings(name: '/OperatorView')));
                                   }
 
                                 } else {

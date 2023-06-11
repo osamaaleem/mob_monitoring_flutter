@@ -78,8 +78,31 @@ class CoordinateNetwork{
     }
   }
 
+  static Future<void> setMobActualCoords(MobCoordinates m){
+    final url = '$_baseUser/MobCoord/SetMobActualCoords';
+    return http.post(
+      Uri.parse(url),
+      body: json.encode(m.preDefToJson()),
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
+      },
+    );
+
+  }
+  static Future<MobCoordinates> getMobActualCoords(int mobId) async {
+    final url = '$_baseUser/MobCoord/GetMobActualCoords?mobID=$mobId';
+    final response = await http.get(Uri.parse(url));
+    if(response.statusCode == 200){
+      final dynamic mobCoords = json.decode(response.body);
+      return MobCoordinates.fromJson(mobCoords);
+    }
+    else{
+      return Future.value(null);
+    }
+  }
   static Future<List<MobCoordinates>> getMobCoords(int mobId) async {
-    final url = '$_baseUser/MobCoord/GetMobCoords/$mobId';
+    final url = '$_baseUser/MobCoord/GetMobCoords?mobID=$mobId';
     final response = await http.get(Uri.parse(url));
     if(response.statusCode == 200){
       final List<dynamic> mobCoords = json.decode(response.body);
@@ -89,7 +112,17 @@ class CoordinateNetwork{
       return Future.value(null);
     }
   }
-
+  Future<MobCoordinates> getLatestCoords(int mobId) async {
+    final url = '$_baseUser/MobCoord/GetLatestCoords?mobID=$mobId';
+    final response = await http.get(Uri.parse(url));
+    if(response.statusCode == 200){
+      final dynamic mobCoords = json.decode(response.body);
+      return MobCoordinates.fromJson(mobCoords);
+    }
+    else{
+      return Future.value(null);
+    }
+  }
   static Future<List<MobCoordinates>> getPreDefCoords(int mobId) async {
     final url = '$_baseUser/MobCoord/getpredefcoords?mobid=$mobId';
     final response = await http.get(Uri.parse(url));
