@@ -4,21 +4,21 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../components/custom_sized_box.dart';
 import '../models/mob.dart';
-import '../models/user.dart';
 import '../networking/mob_network.dart';
-import '../networking/officer_network.dart';
+import '../networking/redzone_network.dart';
+import '../models/redzone.dart';
 
-class AllocateMobOfficer extends StatefulWidget {
-  const AllocateMobOfficer({Key? key}) : super(key: key);
+class AllocateRedzoneMob extends StatefulWidget {
+  const AllocateRedzoneMob({Key? key}) : super(key: key);
 
   @override
-  State<AllocateMobOfficer> createState() => _AllocateMobOfficerState();
+  State<AllocateRedzoneMob> createState() => _AllocateRedzoneMobState();
 }
 
-class _AllocateMobOfficerState extends State<AllocateMobOfficer> {
-  List<User> officers = [];
+class _AllocateRedzoneMobState extends State<AllocateRedzoneMob> {
+  List<Redzone> redzones = [];
   List<Mob> mobs = [];
-  User? selectedOfficer;
+  Redzone? selectedRedzone;
   Mob? selectedMob;
   final _formKey = GlobalKey<FormState>();
   bool isAsyncCall = false;
@@ -30,10 +30,10 @@ class _AllocateMobOfficerState extends State<AllocateMobOfficer> {
   }
 
   Future<void> initializeData() async {
-    officers = await OfficerNetwork.GetOfficersWithoutMobs();
-    mobs = await MobNetwork().getMobsWithoutOfficers();
+    redzones = await RedzoneNetwork().getUnallocatedRedzones();
+    mobs = await MobNetwork().getActiveMobs();
     setState(() {
-      selectedOfficer = officers.isNotEmpty ? officers[0] : null;
+      selectedRedzone = redzones.isNotEmpty ? redzones[0] : null;
       selectedMob = mobs.isNotEmpty ? mobs[0] : null;
     });
   }
@@ -41,7 +41,7 @@ class _AllocateMobOfficerState extends State<AllocateMobOfficer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Allocate Officer to Mob")),
+      appBar: AppBar(title: const Text("Allocate redzone to Mob")),
       body: ModalProgressHUD(
         inAsyncCall: isAsyncCall,
         child: Form(
@@ -77,29 +77,29 @@ class _AllocateMobOfficerState extends State<AllocateMobOfficer> {
                 ),
                 CustomSizedBox.large(),
                 const SizedBox(height: 20.0),
-                DropdownButtonFormField<User>(
+                DropdownButtonFormField<Redzone>(
                   menuMaxHeight: 400,
                   decoration: const InputDecoration(
-                    labelText: 'Select Officer',
+                    labelText: 'Select redzone',
                     border: OutlineInputBorder(),
                   ),
-                  value: selectedOfficer,
-                  onChanged: (User? newValue) {
+                  value: selectedRedzone,
+                  onChanged: (Redzone? newValue) {
                     setState(() {
-                      selectedOfficer = newValue;
+                      selectedRedzone = newValue;
                     });
                   },
-                  items: officers.isNotEmpty
-                      ? officers.map((User user) {
-                    return DropdownMenuItem<User>(
-                      value: user,
-                      child: Text(user.name),
+                  items: redzones.isNotEmpty
+                      ? redzones.map((Redzone redzone) {
+                    return DropdownMenuItem<Redzone>(
+                      value: redzone,
+                      child: Text(redzone.name),
                     );
                   }).toList()
                       : [
-                    const DropdownMenuItem<User>(
+                    const DropdownMenuItem<Redzone>(
                       value: null,
-                      child: Text('No officers available'),
+                      child: Text('No redzones available'),
                     ),
                   ],
                 ),
@@ -137,8 +137,8 @@ class _AllocateMobOfficerState extends State<AllocateMobOfficer> {
                       setState(() {
                         isAsyncCall = true;
                       });
-                      var res = await ManagementNetwork.allocateMobToOfficer(
-                          selectedMob!.mobID!, selectedOfficer!.id!);
+                      var res = await ManagementNetwork.allocateMobToredzone(
+                          selectedMob!.mobID!, selectedRedzone!.id!);
                       setState(() {
                         isAsyncCall = false;
                       });
@@ -146,7 +146,7 @@ class _AllocateMobOfficerState extends State<AllocateMobOfficer> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             duration: Duration(seconds: 2),
-                            content: Text('Officer allocated to mob'),
+                            content: Text('redzone allocated to mob'),
                           ),
                         );
                         Navigator.pop(context);
@@ -154,7 +154,7 @@ class _AllocateMobOfficerState extends State<AllocateMobOfficer> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             duration: Duration(seconds: 1),
-                            content: Text('Error allocating officer to mob'),
+                            content: Text('Error allocating redzone to mob'),
                           ),
                         );
                       }

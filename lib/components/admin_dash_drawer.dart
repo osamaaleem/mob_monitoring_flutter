@@ -101,10 +101,10 @@ class AdminDashDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: const Text("Add Mob"),
+                title: const Text("Allocate Redzones"),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const AddMob()));
+                      MaterialPageRoute(builder: (context) => const AllocateMobOperator()));
                 },
               ),
               ListTile(
@@ -141,7 +141,7 @@ class AdminDashDrawer extends StatelessWidget {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const AddRedzone()));
                 },
-              )
+              ),
             ],
           ),
           ExpansionTile(
